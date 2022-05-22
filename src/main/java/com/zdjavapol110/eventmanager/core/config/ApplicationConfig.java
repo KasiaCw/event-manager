@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationConfig {
 
-
     @Value("${domain}")
     private String domain;
     @Value("${email}")

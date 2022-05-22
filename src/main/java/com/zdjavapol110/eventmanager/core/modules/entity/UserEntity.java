@@ -1,5 +1,6 @@
-package com.zdjavapol110.eventmanager.core.modules.registration;
+package com.zdjavapol110.eventmanager.core.modules.entity;
 
+import com.zdjavapol110.eventmanager.core.modules.user.UserRole;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,8 +27,5 @@ public class UserEntity {
     private String password;
 
     private UserRole role;
-
-
-
 
 }
