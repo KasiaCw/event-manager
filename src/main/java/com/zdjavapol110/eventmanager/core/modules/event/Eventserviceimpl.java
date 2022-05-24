@@ -32,6 +32,8 @@ public class Eventserviceimpl implements EventService {
         Page<Event> events = eventRepository.findAll(pageable);
 
 
+
+
         //get content from page object
         List<Event> listOfEvents = events.getContent();
         return listOfEvents.stream().map(this::mapToDTO).collect(Collectors.toList());

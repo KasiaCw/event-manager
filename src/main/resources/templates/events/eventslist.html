@@ -8,11 +8,11 @@
 <body>
 
 
-    <main>
+<main>
+    <center>
         <h2>
             Events list
-            <a th:href="@{/event-form}"
-               class="btn btn-sm btn-success float-end">Add new event</a>
+
         </h2>
         <div class="table-responsive">
             <table class="table table-striped table-sm">
@@ -32,11 +32,8 @@
                 </tbody>
             </table>
         </div>
-    </main>
 
-</div>
-
-
-
-</body>
-</html>
+        <a th:href="@{/event-form}"
+           class="btn btn-sm btn-success float-end">Add new event</a>
+        </center>
+</main>
