@@ -6,10 +6,11 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"username"}),
-        @UniqueConstraint(columnNames = {"email"})
-})
+//@Table(name = "users", uniqueConstraints = {
+//        @UniqueConstraint(columnNames = {"username"}),
+//        @UniqueConstraint(columnNames = {"email"})
+//})
+@Table(name = "users")
 @Data
 public class UserEntity {
 
@@ -37,5 +38,6 @@ public class UserEntity {
 
     @Column(name = "role")
     private UserRole role;
+
 
 }

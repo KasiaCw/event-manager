@@ -13,7 +13,7 @@ public class RegistrationController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        return "/registration/register-form.hmtl";
+        return "/registration/register-form.html";
     }
 
 }

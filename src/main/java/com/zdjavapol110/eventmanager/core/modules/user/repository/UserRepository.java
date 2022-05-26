@@ -14,4 +14,6 @@ public interface UserRepository extends
     @Query("SELECT u FROM UserEntity u WHERE u.email = ?1")
     public UserEntity findByEmail(String email);
 
+//    public UserEntity findByUserName(String username);
+
 }

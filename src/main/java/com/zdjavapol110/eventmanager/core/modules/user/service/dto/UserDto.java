@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Set;
 
-@XmlRootElement(name = "book")
+@XmlRootElement(name = "user")
 @Getter
 @Setter
 @ToString

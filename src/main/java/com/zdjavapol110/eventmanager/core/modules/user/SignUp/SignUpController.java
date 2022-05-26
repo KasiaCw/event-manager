@@ -56,8 +56,7 @@ public class SignUpController {
     public String listUsers(Model model) {
         List<UserEntity> listUsers = userRepository.findAll();
         model.addAttribute("listUsers", listUsers);
-
-        return "signup/users.html";
+        return "users/users.html";
     }
 }
 

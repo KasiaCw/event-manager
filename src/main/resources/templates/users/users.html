@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>List Users</title>
     <link rel="stylesheet" type="text/css" href="/bootstrap.min.css" />
 <!--    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>-->
@@ -10,12 +11,14 @@
 <body>
 <div class="container text-center">
     <div>
-        <form th:action="@{/logout}" method="post">
+<!--        <form th:action="@{/logout}" method="post" style="max-width: 600px; margin: 0 auto;"-->
+<!--              th:object="${user}">-->
             <p>
-                Welcome <b>[[${#request.userPrincipal.principal.userName}]]</b>
+<!--                Welcome <b>[[${#request.userPrincipal.principal.userName}]]</b>-->
+                Welcome
             </p>
-            <input type="submit" value="Sign Out" />
-        </form>
+<!--            <input type="submit" value="Sign Out" />-->
+<!--        </form>-->
     </div>
     <div>
         <h1>List of Users</h1>
@@ -25,18 +28,18 @@
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
             <tr>
-                <th>User ID</th>
+<!--                <th>User ID</th>-->
                 <th>E-mail</th>
                 <th>First Name</th>
                 <th>Last Name</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user: ${listUsers}">
+            <tr th:each="userEntity: ${listUsers}">
 <!--                <td th:text="${user.id}">User ID</td>-->
-                <td th:text="${user.email}">E-mail</td>
-                <td th:text="${user.firstName}">First Name</td>
-                <td th:text="${user.lastName}">Last Name</td>
+                <td th:text="${userEntity.email}">E-mail</td>
+                <td th:text="${userEntity.firstName}">First Name</td>
+                <td th:text="${userEntity.lastName}">Last Name</td>
             </tr>
             </tbody>
         </table>
