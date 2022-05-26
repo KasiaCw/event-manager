@@ -5,28 +5,50 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
 class EventTestDataInitializer implements InitializingBean {
-    private final EventService eventService;
+  private final EventService eventService;
 
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        if (isEventsTableEmpty()) {
-            log.info("Empty events DB - will initailize with test data");
-            eventService.createEvent(EventDto.builder()
-                    .title("Metallica show")
-                    .description("Greatest show ever")
-                    .date("2022-05-30")
-                    .build());
-        }
+  @Override
+  public void afterPropertiesSet() {
+    if (isEventsTableEmpty()) {
+      log.info("Empty events DB - will initailize with test data");
+      eventService.createEvent(
+          EventDto.builder()
+              .title("Metallica show")
+              .description("Greatest show ever")
+              .startDate(LocalDate.of(2022, 6, 15))
+              .endDate(LocalDate.of(2022, 6, 16))
+              .build());
+      eventService.createEvent(
+          EventDto.builder()
+              .title("Metallica show")
+              .description("Greatest show ever")
+              .startDate(LocalDate.of(2022, 7, 15))
+              .endDate(LocalDate.of(2022, 7, 16))
+              .build());
+      eventService.createEvent(
+          EventDto.builder()
+              .title("Metallica show")
+              .description("Greatest show ever")
+              .startDate(LocalDate.of(2022, 5, 15))
+              .endDate(LocalDate.of(2022, 5, 16))
+              .build());
+      eventService.createEvent(
+          EventDto.builder()
+              .title("Metallica show")
+              .description("Greatest show ever")
+              .startDate(LocalDate.of(2022, 3, 15))
+              .endDate(LocalDate.of(2022, 3, 16))
+              .build());
     }
+  }
 
-    private boolean isEventsTableEmpty() {
-        return eventService.getAllEvents(0, 1).isEmpty();
-    }
-
-
+  private boolean isEventsTableEmpty() {
+    return eventService.getAllEvents(0, 1, "startDate", "asc").isEmpty();
+  }
 }

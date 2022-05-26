@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class EventController {
 
-    private final EventService eventService;
+  private final EventService eventService;
 
-    @GetMapping("/events")
-    public String getEvents(Model model){
-        model.addAttribute("events", eventService.getAllEvents(0, 10));
-        return "events/eventslist.html";
-    }
+  @GetMapping("/events")
+  public String getEvents(Model model) {
+    model.addAttribute("events", eventService.getAllEvents(0, 10, "startDate", "asc"));
+    return "events/eventslist.html";
+  }
 }
