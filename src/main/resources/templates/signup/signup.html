@@ -19,6 +19,13 @@
 
         <div class="p-3">
             <div class="form-group row">
+                <label class="col-4 col-form-label">username</label>
+                <div class="col-8">
+                    <input type="text" class="form-control" th:field="*{username}" required />
+                </div>
+            </div>
+            <br>
+            <div class="form-group row">
                 <label class="col-4 col-form-label">e-mail</label>
                 <div class="col-8">
                     <input type="email" class="form-control" th:field="*{email}" required />
@@ -38,7 +45,7 @@
                 <label class="col-4 col-form-label">retype-password</label>
                 <div class="col-8">
                     <input type="password" class="form-control" th:field="*{password}" required
-                           minlength="8" maxlength="20" />
+                           minlength="6" maxlength="20" />
                 </div>
             </div>
             <br>
