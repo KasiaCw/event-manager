@@ -28,13 +28,15 @@ public class SignUpController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-
         userRepository.save(user);
-
-        return "register_success";
+        return "signup/register_success";
     }
 
-
+    @GetMapping("/login2")
+    public String getLogin(Model model) {
+        model.addAttribute("user", new UserDto());
+        return "signup/login2.html";
+    }
 }
 
 
