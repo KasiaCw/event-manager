@@ -45,13 +45,9 @@ public class SignUpController {
     @PostMapping("/process_success")
     public String processEvents(Model model) {
         model.addAttribute("events", eventService.getAllEvents(0, 10));
-        return "events/eventslist.html";
+        return "redirect:/events";
     }
 
-//    public String getEvents(Model model){
-//        model.addAttribute("events", eventService.getAllEvents(0, 10));
-//        return "events/eventslist.html";
-//    }
     @GetMapping("/users")
     public String listUsers(Model model) {
         List<UserEntity> listUsers = userRepository.findAll();
