@@ -11,4 +11,6 @@ public interface EventService {
   EventDto getEventById(long id);
 
   EventDto updateEvent(EventDto eventDto);
+
+  List<EventDto> getAllEvents(int pageNo, int pageSize);
 }

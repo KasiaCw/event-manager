@@ -64,6 +64,11 @@ public class Eventserviceimpl implements EventService {
     return mapToDTO(updateEvent);
   }
 
+  @Override
+  public List<EventDto> getAllEvents(int pageNo, int pageSize) {
+    return getAllEvents(pageNo, pageSize, "startDate", "asc");
+  }
+
   private Event mapToEntity(EventDto eventDto) {
     Event event = new Event();
     event.setId(eventDto.getId());
