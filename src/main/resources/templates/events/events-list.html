@@ -8,6 +8,7 @@
 </head>
 <body>
 
+
 <main>
     <center>
         <h2>
@@ -27,7 +28,7 @@
                 <tbody>
                 <tr th:each="event : ${events}">
                     <td th:text ="${event.title}">...</td>
-                    <td th:text="${event.startDate}">...</td>
+                    <td th:text="${event.startDate}"/></td>
                     <td th:text="${event.endDate}">...</td>
                     <td th:text="${event.description}">...</td>
                 </tr>

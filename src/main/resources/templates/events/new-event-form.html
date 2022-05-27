@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>New event form</title>
+    <link rel="stylesheet" type="text/css" href="/bootstrap.min.css"/>
+</head>
+<body>
+
+
+<main>
+
+<h3>Welcome! Create new event</h3>
+    <form action="#" th:action="@{/events}" th:object="${event}" method="post">
+    <table>
+        <tr>
+            <td>Title</td>
+            <td> <input type="text" th:field="*{title}" /></td>
+        </tr>
+        <tr>
+            <td>Start Date</td>
+            <td> <input type="date" th:field="*{startDate}" /></td>
+        </tr>
+        <tr>
+            <td>Title</td>
+            <td> <input type="date" th:field="*{endDate}" /></td>
+        </tr>
+        <tr>
+            <td>Title</td>
+            <td> <input type="text" th:field="*{description}" /></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Submit"/></td>
+        </tr>
+    </table>
+    </form>
+</main>
+    </body>
+</html>
