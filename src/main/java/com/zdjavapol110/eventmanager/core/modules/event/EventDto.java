@@ -4,7 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Data
@@ -14,9 +18,18 @@ import java.time.LocalDate;
 public class EventDto {
 
   private Long id;
-  // private String uuid;
-  private String title;
+
+  @NotEmpty private String title;
+
+  @NotNull
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate startDate;
+
+  @NotNull
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate endDate;
+
+  @NotEmpty
+  @Size(min = 20, message = "Post title should have at least 20 characters")
   private String description;
 }

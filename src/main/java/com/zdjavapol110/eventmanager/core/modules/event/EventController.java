@@ -5,8 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.stream.Collectors;
@@ -30,26 +31,28 @@ public class EventController {
 
   private EventDto shortenDescription(EventDto eventDto) {
     String shortenDescription = eventDto.getDescription();
-    if(shortenDescription.length()>50){
-      shortenDescription = shortenDescription.substring(0,50);
+    if (shortenDescription.length() > 50) {
+      shortenDescription = shortenDescription.substring(0, 50);
     }
     return eventDto.toBuilder().description(shortenDescription).build();
   }
 
- @GetMapping( "/event-form")
-  public String showForm(Model model){
-      model.addAttribute("event", new EventDto());
+  @GetMapping("/event-form")
+  public String showForm(Model model) {
+    model.addAttribute("event", new EventDto());
     return "events/new-event-form.html";
- }
+  }
 
- @PostMapping( "/events")
-  public String submit(@Valid @ModelAttribute("event")EventDto event,
-                       BindingResult result, ModelMap model){
-    if (result.hasErrors()){
-      model.addAttribute("message","Pleas enter correct details");
+  @PostMapping("/events")
+  public String submit(
+      @Valid @ModelAttribute("event") EventDto event, BindingResult result, ModelMap model) {
+    if (result.hasErrors()) {
+      model.addAttribute("message", "Pleas enter correct details");
+    } else {
+      eventService.createEvent(event);
+      return "redirect:/events";
     }
-    eventService.createEvent(event);
-    model.addAttribute("event",event);
+    model.addAttribute("event", event);
     return "events/new-event-form.html";
- }
+  }
 }
