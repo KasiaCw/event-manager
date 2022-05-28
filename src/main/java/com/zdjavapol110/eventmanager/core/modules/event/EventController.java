@@ -7,6 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -54,5 +55,11 @@ public class EventController {
     }
     model.addAttribute("event", event);
     return "events/new-event-form.html";
+  }
+
+  @GetMapping("/events/{id}")
+  public String details(@PathVariable("id") Long id, Model model) {
+    model.addAttribute("event",eventService.getEventById(id));
+    return "events/event-details.html";
   }
 }
