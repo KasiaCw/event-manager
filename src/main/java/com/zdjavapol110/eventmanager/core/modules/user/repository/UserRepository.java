@@ -12,9 +12,11 @@ public interface UserRepository extends
 
     UserEntity getByUuid(String uuid);
     @Query("SELECT u FROM UserEntity u WHERE u.email = ?1")
-    public UserEntity findByEmail(String email);
+     UserEntity findByEmail(String email);
 
     @Query("SELECT u FROM UserEntity u WHERE u.username = ?1")
-    public UserEntity findByUserName(String username);
+    UserEntity findByUserName(String username);
+
+
 
 }

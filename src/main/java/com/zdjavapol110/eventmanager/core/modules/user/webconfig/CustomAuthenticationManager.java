@@ -32,7 +32,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        Optional<UserEntity> user = Optional.ofNullable(userRepository.findByUserName(authentication.getName()));
+        Optional<UserEntity> user = Optional.ofNullable(userRepository.findByEmail(authentication.getName()));
         if (user.isPresent()) {
             if (passwordEncoder.matches(authentication.getCredentials().toString(), user.get().getPassword())) {
                 List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();

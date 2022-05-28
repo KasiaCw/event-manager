@@ -24,28 +24,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class WebConfig {
 
-    @Autowired
-    private DataSource dataSource;
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService();
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
-
-        return authProvider;
-    }
-
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.authenticationProvider(authenticationProvider());
@@ -69,24 +47,27 @@ public class WebConfig {
 //                .permitAll();
 //
 //    }
+
+//    @Autowired
+//    CustomAuthenticationManager customAuthenticationManager= new CustomAuthenticationManager();
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                        .antMatchers( "login2").authenticated()
+                        .antMatchers( "login").authenticated()
                         .anyRequest()
                         .permitAll()
                 .and()
-                    .formLogin().loginPage("/login2")
+                    .formLogin().loginPage("/login")
                     .usernameParameter("email")
                     .defaultSuccessUrl("/events")
                     .permitAll()
                 .and()
                     .logout().logoutSuccessUrl("/").permitAll()
                 .and()
-                    .httpBasic(withDefaults())
+                    .httpBasic(withDefaults());
 //                    .authenticationProvider(authenticationProvider());
-                .authenticationManager(new CustomAuthenticationManager());
+//                .authenticationManager(customAuthenticationManager);
         return http.build();
     }
 

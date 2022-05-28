@@ -21,6 +21,9 @@ public class SignUpController {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
     @GetMapping("/signup")
     public String getSignUp(Model model) {
         model.addAttribute("signup", new UserDto());
@@ -30,14 +33,19 @@ public class SignUpController {
 
     @PostMapping("/process_register")
     public String processRegister(UserEntity user) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         userRepository.save(user);
         return "signup/register_success";
     }
 
-    @GetMapping("/login2")
+//    @GetMapping("/login2")
+//    public String getLogin(Model model) {
+//        model.addAttribute("user", new UserDto());
+//        return "signup/login2.html";
+//    }
+
+    @GetMapping("/login")
     public String getLogin(Model model) {
         model.addAttribute("user", new UserDto());
         return "signup/login2.html";
