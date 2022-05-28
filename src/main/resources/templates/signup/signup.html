@@ -12,7 +12,9 @@
     <div>
         <h1>User Registration - Sign Up</h1>
     </div>
-    <form th:action="@{/process_register}" method="post"
+    <form
+
+          th:action="@{/process_register}" method="post"
           style="max-width: 600px; margin: 0 auto;"
           th:object="${user}">
 
@@ -33,23 +35,22 @@
             </div>
             <br>
             <div class="form-group row">
-                <label class="col-4 col-form-label">Password: </label>
+                <label class="col-4 col-form-label control-label" >Your password: </label>
                 <div class="col-8">
-                    <input type="password" th:field="*{password}" id="txtPassword" class="form-control"
-                           required minlength="6" maxlength="10"/>
+                    <input type="password" name="password" class="form-control" id="password"
+                           oninput="check()"
+                           th:field="*{password}" required minlength="8" maxlength="30"/>
                 </div>
             </div>
             <br>
 
             <div class="form-group row">
-                <label class="col-4 col-form-label">Retype password: </label>
-
+                <label class="col-4 col-form-label control-label" >Confirm password: </label>
                 <div class="col-8">
-                    <input type="password"  id="txtConfirmPassword" class="form-control is-invalid"
-                           required minlength="8" maxlength="30" oninput="return Validate()" />
-                    <div class="invalid-feedback">
-                        Password do not match.
-                    </div>
+                    <input type="password" name="confirmPassword" class="form-control is-valid" id="confirmPassword"
+                            oninput="check()"
+                           required minlength="8" maxlength="30"/>
+
                 </div>
             </div>
             <br>
@@ -78,15 +79,17 @@
 
     <footer><a th:href="@{/}">back</a></footer>
 
-    <script type="text/javascript">
-        function Validate() {
-            var password = document.getElementById("txtPassword").value;
-            var confirmPassword = document.getElementById("txtConfirmPassword").value;
-            if (password != confirmPassword) {
-                document.getElementById("txtConfirmPassword").classList.add();
-                return false;
+    <script>
+
+        function check() {
+
+            if (document.getElementById("password").value == document.getElementById("confirmPassword").value) {
+                document.getElementById("confirmPassword").classList.remove("is-invalid");
+
+            } else {
+                // input is fine -- reset the error message
+                document.getElementById("confirmPassword").classList.add("is-invalid");
             }
-            return true;
         }
     </script>
 </div>
