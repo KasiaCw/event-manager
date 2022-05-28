@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:form="http://www.w3.org/1999/xhtml">
+<html lang="en" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +7,21 @@
     <link rel="stylesheet" type="text/css" href="/bootstrap.min.css"/>
 </head>
 <body>
+<div class="container py-3">
+    <header>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+                <span class="fs-4">Events Manager</span>
+            </a>
 
+            <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Home</a>
+                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Events Lists</a>
+                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Support</a>
+            </nav>
+        </div>
+
+    </header>
 
 <main>
 
@@ -17,18 +31,20 @@
         <tr>
             <td>Title</td>
             <td> <input type="text" th:field="*{title}" /></td>
+            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</td>
         </tr>
         <tr>
             <td>Start Date</td>
             <td> <input type="date" th:field="*{startDate}" /></td>
         </tr>
         <tr>
-            <td>Title</td>
+            <td>End Date</td>
             <td> <input type="date" th:field="*{endDate}" /></td>
         </tr>
         <tr>
-            <td>Title</td>
+            <td>Desription</td>
             <td> <input type="text" th:field="*{description}" /></td>
+            <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</td>
         </tr>
         <tr>
             <td><input type="submit" value="Submit"/> <p th:text="${message}"></p></td>
