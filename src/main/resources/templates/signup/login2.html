@@ -8,48 +8,44 @@
 </head>
 <body>
 
-    <div class="container text-center">
-        <div>
-          <h1>User Login</h1>
-        </div>
-
-        <form th:action="@{/login}" method="post"
-              style="max-width: 600px; margin: 0 auto;"
-              th:object="${user}">
-
-
-    <div class="p-3">
-        <div class="form-group row">
-            <label class="col-4 col-form-label">username email</label>
-            <div class="col-8">
-                <input type="email" class="form-control" th:field="*{email}" required />
-            </div>
-        </div>
-        <br>
-        <div class="form-group row">
-            <label class="col-4 col-form-label">Password: </label>
-            <div class="col-8">
-                <input type="password" th:field="*{password}" class="form-control"
-                       required minlength="8" maxlength="30" />
-            </div>
-        </div>
-        <br>
-
-        <div>
-        <button type="submit" class="btn btn-primary mt-2" >Submit</button>
-
-        </div>
-        <div th:if="${user.email} == null"}>
-            <p>Wrong username or password</p>
-            <p>Try again or register</p>
-        </div>
-
-
-        </div>
-        </form>
-
-        <footer><a th:href="@{/}">back</a></footer>
+<div class="container text-center">
+    <div>
+        <h1>User Login</h1>
     </div>
+
+    <form th:action="@{/login}" method="post"
+          style="max-width: 600px; margin: 0 auto;"
+          th:object="${user}">
+
+        <div th:if="${param.error}">
+            <div class="alert alert-info">Invalid username or password</div>
+        </div>
+
+        <div class="p-3">
+            <div class="form-group row">
+                <label class="col-4 col-form-label">email</label>
+                <div class="col-8">
+                    <input type="email" class="form-control" th:field="*{email}" required/>
+                </div>
+            </div>
+            <br>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Password: </label>
+                <div class="col-8">
+                    <input type="password" th:field="*{password}" class="form-control"
+                           required minlength="8" maxlength="30"/>
+                </div>
+            </div>
+            <br>
+
+            <div>
+                <button type="submit" class="btn btn-primary mt-2">Submit</button>
+
+            </div>
+        </div>
+    </form>
+    <footer><a th:href="@{/}">back</a></footer>
+</div>
 
 </body>
 </html>
