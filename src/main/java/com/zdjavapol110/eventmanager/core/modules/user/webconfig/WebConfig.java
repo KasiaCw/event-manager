@@ -74,7 +74,8 @@ public class WebConfig {
         http
                 .authorizeRequests()
                         .antMatchers( "login2").authenticated()
-                        .anyRequest().permitAll()
+                        .anyRequest()
+                        .permitAll()
                 .and()
                     .formLogin().loginPage("/login2")
                     .usernameParameter("email")

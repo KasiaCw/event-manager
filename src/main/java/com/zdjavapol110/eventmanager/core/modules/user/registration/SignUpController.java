@@ -1,4 +1,4 @@
-package com.zdjavapol110.eventmanager.core.modules.user.SignUp;
+package com.zdjavapol110.eventmanager.core.modules.user.registration;
 
 import com.zdjavapol110.eventmanager.core.modules.event.EventService;
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
