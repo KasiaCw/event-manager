@@ -13,4 +13,6 @@ public interface EventService {
   EventDto updateEvent(EventDto eventDto);
 
   List<EventDto> getAllEvents(int pageNo, int pageSize);
+
+  List<EventDto> findByTitle(int pageNo, int pageSize, String sortBy, String sortDir, String match);
 }
