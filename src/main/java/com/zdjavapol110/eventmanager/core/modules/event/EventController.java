@@ -21,13 +21,14 @@ public class EventController {
 
   @GetMapping("/events")
   public String getEvents(Model model) {
-    model.addAttribute(
-        "events",
-        eventService.getAllEvents(0, 10, "startDate", "asc").stream()
-            .map(this::shortenDescription)
-            .collect(Collectors.toList()));
 
-    return "events/events-list.html";
+      model.addAttribute(
+          "events",
+          eventService.getAllEvents(0, 10, "startDate", "asc").stream()
+              .map(this::shortenDescription)
+              .collect(Collectors.toList()));
+      return "events/events-list.html";
+
   }
 
   private EventDto shortenDescription(EventDto eventDto) {
@@ -59,7 +60,7 @@ public class EventController {
 
   @GetMapping("/events/{id}")
   public String details(@PathVariable("id") Long id, Model model) {
-    model.addAttribute("event",eventService.getEventById(id));
+    model.addAttribute("event", eventService.getEventById(id));
     return "events/event-details.html";
   }
 }

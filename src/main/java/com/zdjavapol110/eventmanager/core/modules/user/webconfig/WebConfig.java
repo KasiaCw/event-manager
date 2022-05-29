@@ -16,13 +16,11 @@ public class WebConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        
+
         http
                 .authorizeRequests()
-                    .antMatchers( "login")
-                    .authenticated()
-                    .anyRequest()
-                    .permitAll()
+                .antMatchers("/login","/","/bootstrap.min.css", "/signup", "/favicon.ico").permitAll()
+                .antMatchers( "/**").authenticated()
                 .and()
                     .formLogin()
                     .loginPage("/login")

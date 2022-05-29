@@ -4,6 +4,7 @@ import com.zdjavapol110.eventmanager.core.modules.event.EventService;
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserRepository;
 import com.zdjavapol110.eventmanager.core.modules.user.service.dto.UserDto;
+import com.zdjavapol110.eventmanager.core.modules.util.LoginSessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,25 +25,15 @@ public class SignUpController {
 
   @Autowired BCryptPasswordEncoder passwordEncoder;
 
-  private boolean isUserLogged() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+
 
   @GetMapping("/signup")
   public String getSignUp(Model model) {
-    if(isUserLogged()) {
     model.addAttribute("signup", new UserDto());
     model.addAttribute("user", new UserDto());
-    return "signup/signup.html"; }
-    else {
-      return "redirect:/";
-    }
+    return "signup/signup.html";
   }
+
 
   @PostMapping("/process_register")
   public String processRegister(UserEntity user) {
@@ -55,12 +46,12 @@ public class SignUpController {
   @GetMapping("/login")
   public String getLogin(Model model) {
 
-    if (isUserLogged()) {
+//    if (LoginSessionUtil.isUserLogged()) {
       model.addAttribute("user", new UserDto());
       return "signup/login2.html";
-    } else {
-      return "redirect:/";
-    }
+//    } else {
+//      return "redirect:/";
+//    }
   }
 
   @PostMapping("/process_success")
