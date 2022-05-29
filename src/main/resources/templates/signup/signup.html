@@ -21,7 +21,7 @@
 
         <div th:if="${errorMsg != null}">
             <div class="alert alert-info">
-                <span>User already exists.</span>
+                <span th:text="${errorMsg}">Error message.</span>
             </div>
         </div>
 
