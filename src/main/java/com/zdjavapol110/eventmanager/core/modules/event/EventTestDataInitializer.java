@@ -3,6 +3,7 @@ package com.zdjavapol110.eventmanager.core.modules.event;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@Profile("!test")
 class EventTestDataInitializer implements InitializingBean {
   private final EventService eventService;
 
@@ -26,21 +28,21 @@ class EventTestDataInitializer implements InitializingBean {
               .build());
       eventService.createEvent(
           EventDto.builder()
-              .title("Metallica show")
+              .title("Queen show")
               .description("Greatest show ever")
               .startDate(LocalDate.of(2022, 7, 15))
               .endDate(LocalDate.of(2022, 7, 16))
               .build());
       eventService.createEvent(
           EventDto.builder()
-              .title("Metallica show")
+              .title("Pink Floyd show")
               .description("Greatest show ever")
               .startDate(LocalDate.of(2022, 5, 15))
               .endDate(LocalDate.of(2022, 5, 16))
               .build());
       eventService.createEvent(
           EventDto.builder()
-              .title("Metallica show")
+              .title("Black Sbbath show")
               .description("Greatest show ever")
               .startDate(LocalDate.of(2022, 3, 15))
               .endDate(LocalDate.of(2022, 3, 16))

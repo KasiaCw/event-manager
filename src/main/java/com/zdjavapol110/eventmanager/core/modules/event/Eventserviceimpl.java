@@ -69,6 +69,12 @@ public class Eventserviceimpl implements EventService {
     return getAllEvents(pageNo, pageSize, "startDate", "asc");
   }
 
+  @Override
+  public List<EventDto> findByTitle(int pageNo, int pageSize, String sortBy, String sortDir, String match) {
+    return null;
+  }
+
+
   private Event mapToEntity(EventDto eventDto) {
     Event event = new Event();
     event.setId(eventDto.getId());
