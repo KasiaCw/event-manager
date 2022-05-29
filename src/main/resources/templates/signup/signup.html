@@ -71,14 +71,16 @@
             </div>
             <br>
             <div>
-                <button id="submitBtn" type="submit" class="btn btn-primary mt-2">Submit</button>
+                <button id="submitBtn" type="submit" class="btn btn-primary mt-2">Register</button>
+                <button id="backBtn" type="button" class="btn btn-secondary mt-2" th:href="@{/}">Go back</button>
+            </div>
+
+            <div>
+                <p style="margin-top: 10px;">Already have an account? Click <a th:href="@{/login}">here</a> to log in.</p>
             </div>
 
         </div>
     </form>
-
-    <footer><a th:href="@{/}">back</a></footer>
-
     <script>
 
         function check() {
@@ -87,7 +89,6 @@
                 document.getElementById("confirmPassword").classList.remove("is-invalid");
 
             } else {
-                // input is fine -- reset the error message
                 document.getElementById("confirmPassword").classList.add("is-invalid");
                 document.getElementById("submitBtn").disabled = true;
             }
