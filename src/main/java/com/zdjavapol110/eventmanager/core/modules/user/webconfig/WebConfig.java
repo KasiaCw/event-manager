@@ -19,7 +19,7 @@ public class WebConfig {
 
         http
                 .authorizeRequests()
-                .antMatchers("/login","/","/bootstrap.min.css", "/signup",
+                .antMatchers("/login","/", "/*.map","/bootstrap.min.css", "/blog.css", "/signup",
                         "/favicon.ico", "/process_register", "/process_success").permitAll()
                 .antMatchers( "/**").authenticated()
                 .and()

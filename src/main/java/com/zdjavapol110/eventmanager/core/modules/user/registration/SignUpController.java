@@ -5,15 +5,14 @@ import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserRepository;
 import com.zdjavapol110.eventmanager.core.modules.user.service.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -24,8 +23,6 @@ public class SignUpController {
 
   @Autowired BCryptPasswordEncoder passwordEncoder;
 
-
-
   @GetMapping("/signup")
   public String getSignUp(Model model) {
     model.addAttribute("signup", new UserDto());
@@ -33,20 +30,25 @@ public class SignUpController {
     return "signup/signup.html";
   }
 
-
   @PostMapping("/process_register")
-  public String processRegister(UserEntity user) {
+  public String processRegister(@Valid UserEntity user, Model model) {
+
     String encodedPassword = passwordEncoder.encode(user.getPassword());
     user.setPassword(encodedPassword);
-    userRepository.save(user);
+    try {
+      userRepository.save(user);
+    } catch (Exception ex) {
+      model.addAttribute("errorMsg", "User already exists.");
+      return "redirect:/signup";
+    }
     return "signup/register_success";
   }
 
   @GetMapping("/login")
   public String getLogin(Model model) {
 
-      model.addAttribute("user", new UserDto());
-      return "signup/login2.html";
+    model.addAttribute("user", new UserDto());
+    return "signup/login2.html";
   }
 
   @PostMapping("/process_success")
