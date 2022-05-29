@@ -18,8 +18,10 @@
           th:object="${user}">
 
         <div th:if="${param.error}">
-            <div class="alert alert-info">Invalid username or password</div>
+            <div class="alert alert-info">Invalid username or password.</div>
         </div>
+
+        <div th:if="${param.logout}" class="alert alert-success">You have been logout.</div>
 
         <div class="p-3">
             <div class="form-group row">
@@ -39,7 +41,7 @@
             <br>
 
             <div>
-                <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                <button type="submit" class="btn btn-primary mt-2">Login</button>
 
             </div>
         </div>
