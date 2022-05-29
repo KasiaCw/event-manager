@@ -4,7 +4,6 @@ import com.zdjavapol110.eventmanager.core.modules.event.EventService;
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserRepository;
 import com.zdjavapol110.eventmanager.core.modules.user.service.dto.UserDto;
-import com.zdjavapol110.eventmanager.core.modules.util.LoginSessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -46,12 +45,8 @@ public class SignUpController {
   @GetMapping("/login")
   public String getLogin(Model model) {
 
-//    if (LoginSessionUtil.isUserLogged()) {
       model.addAttribute("user", new UserDto());
       return "signup/login2.html";
-//    } else {
-//      return "redirect:/";
-//    }
   }
 
   @PostMapping("/process_success")
