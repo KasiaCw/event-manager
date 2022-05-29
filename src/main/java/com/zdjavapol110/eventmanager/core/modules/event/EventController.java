@@ -49,7 +49,7 @@ public class EventController {
   public String submit(
       @Valid @ModelAttribute("event") EventDto event, BindingResult result, ModelMap model) {
     if (result.hasErrors()) {
-      model.addAttribute("message", "Pleas enter correct details");
+      model.addAttribute("message", "Please enter correct details");
     } else {
       eventService.createEvent(event);
       return "redirect:/events";

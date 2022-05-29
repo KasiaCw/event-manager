@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -30,16 +29,20 @@ public class SignUpController {
     return "signup/signup.html";
   }
 
-  @PostMapping("/process_register")
+  @PostMapping("/signup")
   public String processRegister(@Valid UserEntity user, Model model) {
 
     String encodedPassword = passwordEncoder.encode(user.getPassword());
     user.setPassword(encodedPassword);
+
     try {
       userRepository.save(user);
+      model.addAttribute("errorMsg", null);
     } catch (Exception ex) {
       model.addAttribute("errorMsg", "User already exists.");
-      return "redirect:/signup";
+      model.addAttribute("signup", new UserDto());
+      model.addAttribute("user", new UserDto());
+      return "signup/signup.html";
     }
     return "signup/register_success";
   }
