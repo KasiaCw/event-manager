@@ -71,7 +71,7 @@
             </div>
             <br>
             <div>
-                <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                <button id="submitBtn" type="submit" class="btn btn-primary mt-2">Submit</button>
             </div>
 
         </div>
@@ -89,6 +89,7 @@
             } else {
                 // input is fine -- reset the error message
                 document.getElementById("confirmPassword").classList.add("is-invalid");
+                document.getElementById("submitBtn").disabled = true;
             }
         }
     </script>
