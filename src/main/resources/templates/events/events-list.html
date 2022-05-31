@@ -21,9 +21,14 @@
                 </form>
                 <a class="me-3 py-2 text-dark text-decoration-none" th:inline="text"> Logged in user: [[${#httpServletRequest.remoteUser}]] </a>
                 <a class="me-3 py-2 text-dark text-decoration-none" href="javascript: logoutForm.submit();">Logout</a>
-                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Home</a>
-                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Events Lists</a>
+                <a class="me-3 py-2 text-dark text-decoration-none" href="/">Home</a>
+                <a class="me-3 py-2 text-dark text-decoration-none" href="/events">Events Lists</a>
                 <a class="me-3 py-2 text-dark text-decoration-none" href="#">Support</a>
+
+                <form th:action="@{/events}">
+                    <input type="text" name="keyword" id="keyword" size="10" th:value="${keyword}"placeholder="keyword" required />
+                    <input type="submit" value="Search" />
+                </form>
 
             </nav>
         </div>
