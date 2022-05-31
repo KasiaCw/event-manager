@@ -1,16 +1,15 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -19,17 +18,6 @@ public class EventController {
 
   private final EventService eventService;
 
-  @GetMapping("/events")
-  public String getEvents(Model model) {
-
-      model.addAttribute(
-          "events",
-          eventService.getAllEvents(0, 10, "startDate", "asc").stream()
-              .map(this::shortenDescription)
-              .collect(Collectors.toList()));
-      return "events/events-list.html";
-
-  }
 
   private EventDto shortenDescription(EventDto eventDto) {
     String shortenDescription = eventDto.getDescription();
@@ -62,5 +50,24 @@ public class EventController {
   public String details(@PathVariable("id") Long id, Model model) {
     model.addAttribute("event", eventService.getEventById(id));
     return "events/event-details.html";
+  }
+
+  @GetMapping("/events")
+  public String findEvents(@RequestParam(value = "keyword",required = false)   String keyword, Model model){
+    System.out.println("Keywod:" + keyword);
+    model.addAttribute("keyword", keyword);
+    List<EventDto> eventsList;
+    if (keyword != null) {
+      eventsList= eventService.findByTitle(0, 10, "startDate", "asc", keyword);
+    } else{
+      eventsList= eventService.getAllEvents(0, 10, "startDate", "asc");
+    }
+    model.addAttribute(
+            "events",
+            eventsList.stream()
+                    .map(this::shortenDescription)
+                    .collect(Collectors.toList()));
+    return "events/events-list.html";
+
   }
 }
