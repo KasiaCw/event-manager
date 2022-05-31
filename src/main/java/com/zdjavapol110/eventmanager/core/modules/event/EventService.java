@@ -14,5 +14,6 @@ public interface EventService {
 
   List<EventDto> getAllEvents(int pageNo, int pageSize);
 
-  List<EventDto> findByTitle(int pageNo, int pageSize, String sortBy, String sortDir, String match);
+
+  List<EventDto> findByTitle(int pageNo, int pageSize, String sortBy, String sortDir, String keyword);
 }

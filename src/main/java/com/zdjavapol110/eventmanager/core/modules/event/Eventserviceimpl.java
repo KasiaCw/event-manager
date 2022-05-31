@@ -70,9 +70,21 @@ public class Eventserviceimpl implements EventService {
   }
 
   @Override
-  public List<EventDto> findByTitle(int pageNo, int pageSize, String sortBy, String sortDir, String match) {
-    return null;
+  public List<EventDto> findByTitle(int pageNo, int pageSize, String sortBy, String sortDir, String keyword) {
+    Sort sort =
+            Sort.Direction.DESC.name().equalsIgnoreCase(sortDir)
+                    ? Sort.by(sortBy).descending()
+                    : Sort.by(sortBy).ascending();
+
+    // create Pageable instance
+    Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+    List<Event> eventsList = eventRepository.findByTitle(keyword);
+
+    // get content from page object
+   // List<Event> listOfEvents = events.getContent();
+    return eventsList.stream().map(this::mapToDTO).collect(Collectors.toList());
   }
+
 
 
   private Event mapToEntity(EventDto eventDto) {

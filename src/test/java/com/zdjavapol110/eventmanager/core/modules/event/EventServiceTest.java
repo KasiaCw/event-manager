@@ -100,14 +100,13 @@ class EventServiceTest {
   }
 
   @Test
-  @Disabled("implementation in progress")
   void shouldShearchByTitle() {
     // given
     EventDto matchingEvent =
         eventService.createEvent(eventFixture().title("matching aaa title").build());
     EventDto notMatchingEvent =
         eventService.createEvent(eventFixture().title("not matching bbb title").build());
-    String searchString = "aaa";
+    String keyword = "aaa";
 
     // when
 
@@ -116,7 +115,7 @@ class EventServiceTest {
     String sortBy = "startDate";
     String sortDir = "ASC";
     List<EventDto> matchingEvents =
-        eventService.findByTitle(pageNo, pageSize, sortBy, sortDir, searchString);
+        eventService.findByTitle(pageNo, pageSize, sortBy, sortDir, keyword);
 
     // then
 
