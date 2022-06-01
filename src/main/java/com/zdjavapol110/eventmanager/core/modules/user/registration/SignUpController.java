@@ -4,6 +4,7 @@ import com.zdjavapol110.eventmanager.core.modules.event.EventService;
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserRepository;
 import com.zdjavapol110.eventmanager.core.modules.user.service.dto.UserDto;
+import com.zdjavapol110.eventmanager.core.utils.LoginUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -24,9 +25,13 @@ public class SignUpController {
 
   @GetMapping("/signup")
   public String getSignUp(Model model) {
-    model.addAttribute("signup", new UserDto());
-    model.addAttribute("user", new UserDto());
-    return "signup/signup.html";
+    if (LoginUtils.isUserLogged()) {
+      model.addAttribute("signup", new UserDto());
+      model.addAttribute("user", new UserDto());
+      return "signup/signup.html";
+    } else {
+      return "redirect:/";
+    }
   }
 
   @PostMapping("/signup")
@@ -49,9 +54,12 @@ public class SignUpController {
 
   @GetMapping("/login")
   public String getLogin(Model model) {
-
+    if (LoginUtils.isUserLogged()) {
     model.addAttribute("user", new UserDto());
-    return "signup/login2.html";
+    return "signup/login2.html"; }
+    else {
+      return "redirect:/";
+    }
   }
 
   @PostMapping("/process_success")
@@ -62,8 +70,12 @@ public class SignUpController {
 
   @GetMapping("/users")
   public String listUsers(Model model) {
-    List<UserEntity> listUsers = userRepository.findAll();
-    model.addAttribute("listUsers", listUsers);
-    return "users/users.html";
+    if (LoginUtils.isUserLogged()) {
+      List<UserEntity> listUsers = userRepository.findAll();
+      model.addAttribute("listUsers", listUsers);
+      return "users/users.html";
+    } else {
+      return "redirect:/";
+    }
   }
 }
