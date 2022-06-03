@@ -85,6 +85,12 @@ public class Eventserviceimpl implements EventService {
     return eventsList.stream().map(this::mapToDTO).collect(Collectors.toList());
   }
 
+  @Override
+  public void deleteEvent(Long id) {
+//    Event event = eventRepository.getReferenceById(id);
+    eventRepository.deleteById(id);
+//    eventRepository.delete(event);
+  }
 
 
   private Event mapToEntity(EventDto eventDto) {

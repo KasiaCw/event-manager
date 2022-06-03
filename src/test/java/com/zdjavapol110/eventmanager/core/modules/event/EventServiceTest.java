@@ -122,6 +122,36 @@ class EventServiceTest {
     assertThat(matchingEvents).containsExactly(matchingEvent).doesNotContain(notMatchingEvent);
   }
 
+  @Test
+  void shouldDeleteEvent(){
+    //given
+    EventDto eventToDelete =
+            eventService.createEvent(
+                    eventFixture()
+                            .title("Event to delete")
+                            .description("description")
+                            .startDate(LocalDate.of(2021, 1, 1))
+                            .endDate(LocalDate.of(2021, 1, 2))
+                            .build());
+    EventDto eventToStay =
+            eventService.createEvent(
+                    eventFixture()
+                            .title("Event to stay")
+                            .description("description")
+                            .startDate(LocalDate.of(2021, 9, 1))
+                            .endDate(LocalDate.of(2021, 2, 2))
+                            .build());
+    //when
+    eventService.deleteEvent(eventToDelete.getId());
+    int pageNo = 0;
+    int pageSize = 10;
+    String sortBy = "startDate";
+    String sortDir = "ASC";
+    List<EventDto> allEvents = eventService.getAllEvents(pageNo, pageSize, sortBy, sortDir);
+    //then
+    assertThat(allEvents).containsExactly(eventToStay).doesNotContain(eventToDelete);
+  }
+
   private EventDto.EventDtoBuilder eventFixture() {
     return EventDto.builder()
         .title("Test event")
@@ -129,4 +159,6 @@ class EventServiceTest {
         .startDate(LocalDate.of(2022, 5, 15))
         .endDate(LocalDate.of(2022, 5, 16));
   }
+
+
 }

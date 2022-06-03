@@ -60,6 +60,9 @@
                     <td>
                         <a th:href="@{/events/{id}/(id=${event.id})}"
                            class="btn btn-sm btn-success">Details</a>
+                        <form th:action="@{/events/{id}(id=${event.id})}" th:method="delete">
+                            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>
