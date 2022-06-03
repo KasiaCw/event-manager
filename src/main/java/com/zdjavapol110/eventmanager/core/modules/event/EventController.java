@@ -70,4 +70,10 @@ public class EventController {
     return "events/events-list.html";
 
   }
+
+  @DeleteMapping("/events/{id}")
+  public String delete (@PathVariable("id") Long id){
+    eventService.deleteEvent(id);
+    return "redirect:/events";
+  }
 }
