@@ -1,12 +1,16 @@
 package com.zdjavapol110.eventmanager.core.modules.user.repository;
 
-import com.zdjavapol110.eventmanager.core.modules.user.UserRole;
 import lombok.Data;
 
+import javax.management.relation.Role;
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Table(name = "user", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = {"email"}
         )
 })
@@ -14,14 +18,13 @@ import javax.persistence.*;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "uuid")
     private String uuid;
 
     @Column(name = "email")
-
     private String email;
 
     @Column(name = "first_name")
@@ -37,6 +40,10 @@ public class UserEntity {
     private String password;
 
     @Column(name = "role")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private ERole role;
+
+    @Column(name = "active", columnDefinition = "tinyint default 1")
+    private boolean active = true;
 
 }

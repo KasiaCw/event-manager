@@ -1,10 +1,10 @@
 package com.zdjavapol110.eventmanager.core.modules.user.registration;
 
 import com.zdjavapol110.eventmanager.core.modules.event.EventService;
+import com.zdjavapol110.eventmanager.core.modules.user.repository.ERole;
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserRepository;
 import com.zdjavapol110.eventmanager.core.modules.user.service.dto.UserDto;
-import com.zdjavapol110.eventmanager.core.utils.LoginUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.zdjavapol110.eventmanager.core.modules.user.webconfig.LoginUtil.isUserLogged;
 
 @Controller
 public class SignUpController {
@@ -25,20 +27,22 @@ public class SignUpController {
 
   @GetMapping("/signup")
   public String getSignUp(Model model) {
-    if (LoginUtils.isUserLogged()) {
+    if(isUserLogged()){
+      return "redirect:/";
+    }
       model.addAttribute("signup", new UserDto());
       model.addAttribute("user", new UserDto());
       return "signup/signup.html";
-    } else {
-      return "redirect:/";
-    }
   }
 
   @PostMapping("/signup")
   public String processRegister(@Valid UserEntity user, Model model) {
-
+    if(isUserLogged()){
+      return "redirect:/";
+    }
     String encodedPassword = passwordEncoder.encode(user.getPassword());
     user.setPassword(encodedPassword);
+    user.setRole(ERole.USER);
 
     try {
       userRepository.save(user);
@@ -54,12 +58,11 @@ public class SignUpController {
 
   @GetMapping("/login")
   public String getLogin(Model model) {
-    if (LoginUtils.isUserLogged()) {
-    model.addAttribute("user", new UserDto());
-    return "signup/login2.html"; }
-    else {
+    if(isUserLogged()){
       return "redirect:/";
     }
+    model.addAttribute("user", new UserDto());
+    return "signup/login2.html";
   }
 
   @PostMapping("/process_success")
@@ -70,12 +73,8 @@ public class SignUpController {
 
   @GetMapping("/users")
   public String listUsers(Model model) {
-    if (LoginUtils.isUserLogged()) {
       List<UserEntity> listUsers = userRepository.findAll();
       model.addAttribute("listUsers", listUsers);
       return "users/users.html";
-    } else {
-      return "redirect:/";
-    }
   }
 }
