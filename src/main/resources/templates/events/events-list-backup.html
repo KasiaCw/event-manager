@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Events list</title>
+    <link rel="stylesheet" type="text/css" href="/bootstrap.min.css"/>
+    <div th:replace="/main-components/head :: fragment"></div>
+
+</head>
+
+<div class="container py-3">
+    <header>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+                <span class="fs-4">Events Manager</span>
+            </a>
+
+
+            <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                <form name="logoutForm" th:hidden="true" method="post" th:action="@{/logout}" th:object="${user}">
+                    <input type="submit" value="Logout" />
+                </form>
+                <a class="me-3 py-2 text-dark text-decoration-none" th:inline="text"> Logged in as: [[${#httpServletRequest.remoteUser}]] </a>
+                <a class="me-3 py-2 text-dark text-decoration-none" href="javascript: logoutForm.submit();">Logout</a>
+                <a class="me-3 py-2 text-dark text-decoration-none" href="/">Home</a>
+                <a class="me-3 py-2 text-dark text-decoration-none" href="/events">Events Lists</a>
+                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Support</a>
+
+                <form th:action="@{/events}">
+                    <input type="text" name="keyword" id="keyword" size="10" th:value="${keyword}"placeholder="Search for event" required />
+                    <input type="submit" value="Search" />
+                </form>
+
+            </nav>
+        </div>
+
+    </header>
+    <body>
+
+<main>
+    <center>
+        <h2>
+            Events list
+
+        </h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">StartDate</th>
+                    <th scope="col">EndDate</th>
+                    <th scope="col">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="event : ${events}">
+                    <td th:text ="${event.title}">...</td>
+                    <td th:text="${event.startDate}"/></td>
+                    <td th:text="${event.endDate}">...</td>
+                    <td th:text="${event.description}">...</td>
+                    <td>
+                        <a th:href="@{/events/{id}/(id=${event.id})}"
+                           class="btn btn-sm btn-success">Details</a>
+                        <form th:action="@{/events/{id}(id=${event.id})}" th:method="delete">
+                            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+<div class="btn-add-event">
+        <a th:href="@{/event-form}"
+           class="btn btn-sm btn-success float-end">Add new event</a>
+</div>
+
+</main>
+
+</body>
+<!-- footer -->
+<div th:replace="/main-components/footer :: fragment"></div>
+
+</html>
