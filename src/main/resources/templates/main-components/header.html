@@ -30,14 +30,14 @@
                                         </span>
                                         <span sec:authorize="isAuthenticated()" >
                                             <li><a href="/events"><b>Event List</b></a></li>
+
+                                            <span th:if="'show' == ${searchByKeywordFormView}">
+                                                <li><button onclick="showSearchForm()">Search</button></li>
+                                        </span>
                                         </span>
                                     </ul>
                                 </nav>
                             </div>
-
-                            <div th:if="'events' == ${events}">A hotdog! 🌭</div>
-
-
                             <span sec:authorize="isAnonymous()">
                             <div class="header-right-btn f-right d-none d-lg-block ml-30">
                                 <a href="/signup" class="btn header-btn">Sign Up</a>

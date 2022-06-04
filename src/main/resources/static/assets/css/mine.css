@@ -6,6 +6,9 @@
     margin-right: 25px;
 }
 
+.mine-block {
+    display: block;
+}
 .footer-logo img {
     width: 50%;
     display: block;
@@ -18,3 +21,15 @@
     visibility: hidden;
     height: 1px;
 }
+
+#mine-searchFrm {
+    display: none;
+}
+
+
+<!-- FORMS -->
+
+.mine-searchInput {
+
+}
+

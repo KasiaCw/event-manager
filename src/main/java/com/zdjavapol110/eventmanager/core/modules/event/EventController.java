@@ -54,7 +54,7 @@ public class EventController {
 
   @GetMapping("/events")
   public String findEvents(@RequestParam(value = "keyword",required = false)   String keyword, Model model){
-    System.out.println("Keywod:" + keyword);
+    System.out.println("Keyword:" + keyword);
     model.addAttribute("keyword", keyword);
     List<EventDto> eventsList;
     if (keyword != null) {
@@ -62,6 +62,7 @@ public class EventController {
     } else{
       eventsList= eventService.getAllEvents(0, 10, "startDate", "asc");
     }
+    model.addAttribute("searchByKeywordFormView", "show");
     model.addAttribute(
             "events",
             eventsList.stream()
