@@ -1,4 +1,17 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/solid.css">
+<style>
+    @keyframes fade_in_show {
+        0% {
+            opacity: 0;
+            transform: scale(0)
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1)
+        }
+    }
+</style>
 <form th:fragment="fragment">
     <span class="mine-block">
         <input style="
