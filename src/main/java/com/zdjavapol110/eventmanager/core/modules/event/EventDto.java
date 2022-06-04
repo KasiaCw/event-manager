@@ -30,6 +30,9 @@ public class EventDto {
   private LocalDate endDate;
 
   @NotEmpty
-  @Size(min = 20, message = "Post title should have at least 20 characters")
+  @Size(min = 20, message = "Event description should have at least 20 characters")
   private String description;
+
+  @NotNull
+  private EventState status;
 }
