@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Events list</title>
     <link rel="stylesheet" type="text/css" href="/bootstrap.min.css"/>
+    <div th:replace="/main-components/head :: fragment"></div>
+
 </head>
-<body>
+
 <div class="container py-3">
     <header>
         <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
@@ -19,14 +21,14 @@
                 <form name="logoutForm" th:hidden="true" method="post" th:action="@{/logout}" th:object="${user}">
                     <input type="submit" value="Logout" />
                 </form>
-                <a class="me-3 py-2 text-dark text-decoration-none" th:inline="text"> Logged in user: [[${#httpServletRequest.remoteUser}]] </a>
+                <a class="me-3 py-2 text-dark text-decoration-none" th:inline="text"> Logged in as: [[${#httpServletRequest.remoteUser}]] </a>
                 <a class="me-3 py-2 text-dark text-decoration-none" href="javascript: logoutForm.submit();">Logout</a>
                 <a class="me-3 py-2 text-dark text-decoration-none" href="/">Home</a>
                 <a class="me-3 py-2 text-dark text-decoration-none" href="/events">Events Lists</a>
                 <a class="me-3 py-2 text-dark text-decoration-none" href="#">Support</a>
 
                 <form th:action="@{/events}">
-                    <input type="text" name="keyword" id="keyword" size="10" th:value="${keyword}"placeholder="keyword" required />
+                    <input type="text" name="keyword" id="keyword" size="10" th:value="${keyword}"placeholder="Search for event" required />
                     <input type="submit" value="Search" />
                 </form>
 
@@ -34,6 +36,7 @@
         </div>
 
     </header>
+    <body>
 
 <main>
     <center>
@@ -68,13 +71,15 @@
                 </tbody>
             </table>
         </div>
-
+<div class="btn-add-event">
         <a th:href="@{/event-form}"
            class="btn btn-sm btn-success float-end">Add new event</a>
-        </center>
+</div>
 
 </main>
 
-
 </body>
+<!-- footer -->
+<div th:replace="/main-components/footer :: fragment"></div>
+
 </html>
