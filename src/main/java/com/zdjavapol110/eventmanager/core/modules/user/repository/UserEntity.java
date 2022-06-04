@@ -1,6 +1,7 @@
 package com.zdjavapol110.eventmanager.core.modules.user.repository;
 
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import javax.management.relation.Role;
 import javax.persistence.*;

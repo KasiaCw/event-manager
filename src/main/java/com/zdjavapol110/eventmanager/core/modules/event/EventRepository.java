@@ -1,5 +1,7 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
+import lombok.Builder;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -12,4 +14,13 @@ public interface EventRepository
     @Query("SELECT E FROM Event E WHERE LOWER(E.title) LIKE concat('%', LOWER (?1),'%')")
     List<Event> findByTitle(String keyword);
 
+    default Specification<Event> onlyPublished() {
+        return ((root, query, criteriaBuilder) -> criteriaBuilder
+                .notEqual(root.get("status"),EventState.NOT_PUBLISHED));
+    }
+
+    default Specification<Event> onlyTitle(String title) {
+        return ((root, query, criteriaBuilder) -> criteriaBuilder
+                .like(criteriaBuilder.lower(root.get("title")),"%" + title.toLowerCase() + "%"));
+    }
 }

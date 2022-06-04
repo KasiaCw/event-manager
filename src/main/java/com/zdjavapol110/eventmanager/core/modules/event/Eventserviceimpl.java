@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class Eventserviceimpl implements EventService {
 
     // create Pageable instance
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-    Page<Event> events = eventRepository.findAll(pageable);
+    Page<Event> events = eventRepository.findAll(eventRepository.onlyPublished(), pageable);
 
     // get content from page object
     List<Event> listOfEvents = events.getContent();
@@ -44,7 +45,7 @@ public class Eventserviceimpl implements EventService {
   public EventDto getEventById(long id) {
     Event event =
         eventRepository
-            .findById(id)
+            .findById(id) //todo filter not published visible only for owners
             .orElseThrow(() -> new ResourceNotFoundException("Event", "id", id));
     return mapToDTO(event);
   }
@@ -53,7 +54,7 @@ public class Eventserviceimpl implements EventService {
   public EventDto updateEvent(EventDto eventDto) {
     Event event =
         eventRepository
-            .findById(eventDto.getId())
+            .findById(eventDto.getId())    //todo filter not published visible only for owners
             .orElseThrow(() -> new ResourceNotFoundException("Event", "id", eventDto.getId()));
     event.setTitle(eventDto.getTitle());
     event.setStartDate(eventDto.getStartDate());
@@ -78,7 +79,10 @@ public class Eventserviceimpl implements EventService {
 
     // create Pageable instance
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-    List<Event> eventsList = eventRepository.findByTitle(keyword);
+    Specification<Event> conditionSpec = eventRepository
+            .onlyPublished()
+            .and(eventRepository.onlyTitle(keyword));
+    List<Event> eventsList = eventRepository.findAll(conditionSpec);
 
     // get content from page object
    // List<Event> listOfEvents = events.getContent();
