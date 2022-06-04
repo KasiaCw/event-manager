@@ -22,7 +22,7 @@ public class WebConfig {
                 .antMatchers("/login","/", "/*.map","/bootstrap.min.css", "/blog.css", "/signup",
                         "/favicon.ico", "/process_success", "/assets/**")
                 .permitAll()
-                .antMatchers("/api/admin/user/**").hasRole(Role.)
+                .antMatchers("/users").hasAuthority("ADMIN")
                 .antMatchers( "/**")
                 .authenticated()
                 .and()

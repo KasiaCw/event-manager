@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.management.relation.Role;
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -18,7 +18,7 @@ import java.util.Set;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "uuid")
@@ -39,19 +39,11 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "user_role")
-    private String role;
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private ERole role;
 
-    private boolean active;
+    @Column(name = "active", columnDefinition = "tinyint default 1")
+    private boolean active = true;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
-
-
-    public void addRole(Role role) {
-        this.roles.add(role);
-    }
 }

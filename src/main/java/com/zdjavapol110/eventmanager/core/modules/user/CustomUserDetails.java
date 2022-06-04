@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
-    private UserEntity userEntity;
     private String userName;
     private String password;
     private boolean active;
@@ -22,25 +21,23 @@ public class CustomUserDetails implements UserDetails {
         this.userName = userEntity.getEmail();
         this.password = userEntity.getPassword();
         this.active = userEntity.isActive();
-        this.authorityList = Arrays.stream(userEntity.getRole().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        this.authorityList = List.of(new SimpleGrantedAuthority(userEntity.getRole().name()));
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        return authorityList;
 
     }
 
     @Override
     public String getPassword() {
-        return userEntity.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return userEntity.getEmail();
+        return userName;
     }
 
     @Override
@@ -60,10 +57,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return active;
     }
 
-    public String getFullName() {
-        return userEntity.getFirstName() + " " + userEntity.getLastName();
-    }
 }
