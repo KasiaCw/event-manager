@@ -20,8 +20,11 @@ public class WebConfig {
         http
                 .authorizeRequests()
                 .antMatchers("/login","/", "/*.map","/bootstrap.min.css", "/blog.css", "/signup",
-                        "/favicon.ico", "/process_success", "/assets/**").permitAll()
-                .antMatchers( "/**").authenticated()
+                        "/favicon.ico", "/process_success", "/assets/**")
+                .permitAll()
+                .antMatchers("/api/admin/user/**").hasRole(Role.)
+                .antMatchers( "/**")
+                .authenticated()
                 .and()
                     .formLogin()
                     .loginPage("/login")
