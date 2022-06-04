@@ -1,5 +1,8 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
+import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentDto;
+import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentRepository;
+import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -17,12 +20,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EventServiceTest {
 
   @Autowired EventService eventService;
-
   @Autowired EventRepository eventRepository;
+
+  @Autowired CommentService commentService;
+  @Autowired CommentRepository commentRepository;
 
   @AfterEach
   void cleanup(){
     eventRepository.deleteAll();
+    commentRepository.deleteAll();
   }
 
   @Test
@@ -152,12 +158,42 @@ class EventServiceTest {
     assertThat(allEvents).containsExactly(eventToStay).doesNotContain(eventToDelete);
   }
 
+  @Test
+  void shouldCreateComment(){
+    //given
+    EventDto eventToComment =
+            eventService.createEvent(
+                    eventFixture()
+                            .title("Event to stay")
+                            .description("description")
+                            .startDate(LocalDate.of(2021, 9, 1))
+                            .endDate(LocalDate.of(2021, 2, 2))
+                            .build());
+    CommentDto comment = commentFixture().build();
+
+    //wehen
+    CommentDto createdComment = commentService.createComment(eventToComment.getId(),comment);
+    List<CommentDto> commentsOfEvent = commentService.getCommentsOfEvent(eventToComment.getId());
+    // then
+    assertThat(commentsOfEvent).containsExactly(createdComment);
+    assertThat(createdComment).usingRecursiveComparison().ignoringFields("id").isEqualTo(comment);
+  }
+
+
+
   private EventDto.EventDtoBuilder eventFixture() {
     return EventDto.builder()
         .title("Test event")
         .description("Test event description")
         .startDate(LocalDate.of(2022, 5, 15))
         .endDate(LocalDate.of(2022, 5, 16));
+  }
+
+  private CommentDto.CommentDtoBuilder commentFixture() {
+    return CommentDto.builder()
+            .name("Test event")
+            .email("Test comment email")
+            .body("Test comment body");
   }
 
 
