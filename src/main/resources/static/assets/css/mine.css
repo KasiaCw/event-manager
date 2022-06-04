@@ -1,3 +1,20 @@
 .btn-add-event {
     margin-bottom: 60px;
 }
+
+.mine-welcome-span {
+    margin-right: 25px;
+}
+
+.footer-logo img {
+    width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mine-js-hidden {
+    display: none;
+    visibility: hidden;
+    height: 1px;
+}

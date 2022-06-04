@@ -21,11 +21,7 @@
                         <div class="col-xl-8 col-lg-8 col-md-9 col-sm-10">
                             <div class="hero__caption">
                                 <span data-animation="fadeInLeft" data-delay=".1s">Event Manager</span>
-                                Authenticated username:
-                                <div sec:authentication="name"></div>
-                                <div sec:authorize="isAuthenticated()">
-                                    This content is only shown to authenticated users.
-                                </div>
+
                                 <h1 data-animation="fadeInLeft" data-delay=".5s">Manage your events and participate in
                                     others like a BOSS</h1>
                             </div>
@@ -51,8 +47,12 @@
                         <p>You can simply know how many people are going to pariticapte.</p>
                         <p>Fill the event name, start and end date, details and that's it!</p>
                     </div>
-
-                    <a href="/signup" class="btn mt-50">Sign up</a>
+                    <span sec:authorize="isAnonymous()">
+                        <a href="/signup" class="btn mt-50">Sign up</a>
+                    </span>
+                    <span sec:authorize="isAuthenticated()">
+                        <a href="/events" class="btn mt-50">Getting started</a>
+                    </span>
                 </div>
                 <div class="col-lg-6 col-md-12">
                     <!-- about-img -->
@@ -106,14 +106,14 @@
         </div>
     </section>
     <!-- About Law End-->
+    <div th:replace="/main-components/back-to-top :: fragment"></div>
     <!-- footer -->
     <div th:replace="/main-components/footer :: fragment"></div>
     <!-- Scroll Up -->
-    <div th:replace="/main-components/back-to-top :: fragment"></div>
-
     <!-- JS scripts -->
-    <div th:replace="/main-components/js-list :: fragment"></div>
+
 
 </main>
 </body>
+    <div class="mine-js-hidden" th:replace="/main-components/js-list :: fragment"></div>
 </html>

@@ -1,4 +1,4 @@
-<header th:fragment="fragment">
+<header th:fragment="fragment" xmlns:sec="http://www.w3.org/1999/xhtml">
     <!--? Header Start -->
     <div class="header-area">
         <div class="main-header header-sticky">
@@ -16,16 +16,43 @@
                             <div class="main-menu f-right d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
+
+                                        <span sec:authorize="isAuthenticated()" class="mine-welcome-span">
+                                            Welcome, <b><span sec:authentication="name"></span></b>!
+                                        </span>
+
                                         <li><a href="/">Home</a></li>
+
                                         <li><a href="/contact">Contact</a></li>
+
+                                        <span sec:authorize="isAnonymous()">
                                         <li><a href="/login">Login</a></li>
+                                        </span>
+                                        <span sec:authorize="isAuthenticated()" >
+                                            <li><a href="/events"><b>Event List</b></a></li>
+                                        </span>
                                     </ul>
                                 </nav>
                             </div>
 
+
+
+                            <span sec:authorize="isAnonymous()">
                             <div class="header-right-btn f-right d-none d-lg-block ml-30">
-                                <a href="#" class="btn header-btn">Sign Up</a>
+                                <a href="/signup" class="btn header-btn">Sign Up</a>
                             </div>
+                            </span>
+
+                            <span sec:authorize="isAuthenticated()">
+                            <div class="header-right-btn f-right d-none d-lg-block ml-30">
+                                <form name="logoutForm" th:hidden="true" method="post" th:action="@{/logout}"
+                                      th:object="${user}">
+                    <input type="submit" value="Logout"/>
+                </form>
+                    <a href="javascript: logoutForm.submit();" class="btn header-btn">Log out</a>
+                            </div>
+                            </span>
+
                         </div>
                     </div>
                     <!-- Mobile Menu -->
