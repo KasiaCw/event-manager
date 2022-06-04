@@ -1,6 +1,5 @@
 package com.zdjavapol110.eventmanager.core.modules.user.webconfig;
 
-import com.zdjavapol110.eventmanager.core.modules.user.UserRole;
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +7,9 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

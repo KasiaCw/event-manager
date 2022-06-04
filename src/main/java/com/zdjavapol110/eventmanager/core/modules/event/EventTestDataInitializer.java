@@ -25,6 +25,7 @@ class EventTestDataInitializer implements InitializingBean {
               .description("Greatest show ever")
               .startDate(LocalDate.of(2022, 6, 15))
               .endDate(LocalDate.of(2022, 6, 16))
+              .status(EventState.PUBLISHED)
               .build());
       eventService.createEvent(
           EventDto.builder()
@@ -32,6 +33,7 @@ class EventTestDataInitializer implements InitializingBean {
               .description("Greatest show ever")
               .startDate(LocalDate.of(2022, 7, 15))
               .endDate(LocalDate.of(2022, 7, 16))
+              .status(EventState.PUBLISHED)
               .build());
       eventService.createEvent(
           EventDto.builder()
@@ -39,6 +41,7 @@ class EventTestDataInitializer implements InitializingBean {
               .description("Greatest show ever")
               .startDate(LocalDate.of(2022, 5, 15))
               .endDate(LocalDate.of(2022, 5, 16))
+              .status(EventState.PUBLISHED)
               .build());
       eventService.createEvent(
           EventDto.builder()
@@ -46,6 +49,7 @@ class EventTestDataInitializer implements InitializingBean {
               .description("Greatest show ever")
               .startDate(LocalDate.of(2022, 3, 15))
               .endDate(LocalDate.of(2022, 3, 16))
+              .status(EventState.PUBLISHED)
               .build());
     }
   }
