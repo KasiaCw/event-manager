@@ -1,16 +1,17 @@
-
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/solid.css">
 <form th:fragment="fragment">
     <span class="mine-block">
-        <input style="display: block;
+        <input style="
+               display: block;
                width: 90%;
                padding: 12px 20px;
                margin: 8px 0;
                box-sizing: border-box;
                border: 2px solid #0a0b29;
-               border-radius: 4px;
+               border-radius: 25px;
                margin-bottom: 10px;"
                type="text" name="keyword" id="keyword" size="10" th:value="${keyword}"
-        placeholder="Search for event" required/>
+               placeholder="Search for an event" required/>
     </span>
     <span class="mine-block">
        <button class="btn btn-sm btn-success" style="margin-bottom: 10px;" type="submit">Search</button>

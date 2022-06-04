@@ -32,7 +32,10 @@
                                             <li><a href="/events"><b>Event List</b></a></li>
 
                                             <span th:if="'show' == ${searchByKeywordFormView}">
-                                                <li><button onclick="showSearchForm()">Search</button></li>
+                                                <li><a href="#" onclick="showSearchForm()">
+                                                    <i class="fa fa-search" aria-hidden="true"></i> Search
+                                                    </a>
+                                                </li>
                                         </span>
                                         </span>
                                     </ul>
