@@ -1,5 +1,6 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
+import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -14,6 +15,17 @@ import java.time.LocalDate;
 @Profile("!test")
 class EventTestDataInitializer implements InitializingBean {
   private final EventService eventService;
+  private final String eventDescriptionMock = "That dominion stars lights dominion divide years for fourth have don't stars is that\n" +
+          "      he earth it first without heaven in placesdjiof seed it second morning saying.\n" +
+          "    lorem ipsum That dominion stars lights dominion divide years for fourth have don't stars is that\n" +
+          "      he earth it first without heaven in placesdjiof seed it second morning saying.\n" +
+          "      lorem ipsumThat dominion stars lights dominion divide years for fourth have don't stars is that\n" +
+          "      he earth it first without heaven in placesdjiof seed it second morning saying.\n" +
+          "      lorem ipsumThat dominion stars lights dominion divide years for fourth have don't stars is that\n" +
+          "      he earth it first without heaven in placesdjiof seed it second morning saying.\n" +
+          "      lorem ipsumThat dominion stars lights dominion divide years for fourth have don't stars is that\n" +
+          "      he earth it first without heaven in placesdjiof seed it second morning saying.\n" +
+          "      lorem ipsum";
 
   @Override
   public void afterPropertiesSet() {

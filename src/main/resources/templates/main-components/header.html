@@ -18,24 +18,26 @@
                                     <ul id="navigation">
 
                                         <span sec:authorize="isAuthenticated()" class="mine-welcome-span">
-                                            Welcome, <b><span sec:authentication="name"></span></b>!
+                                            Hi, <b><span sec:authentication="name"></span></b>!
                                         </span>
 
-                                        <li><a href="/">Home</a></li>
+                                        <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
 
-                                        <li><a href="/contact">Contact</a></li>
-
+                                        <li><a href="/contact"><i class="fa fa-phone" aria-hidden="true"></i></a></li>
+                                        <span sec:authorize="isAuthenticated()">
+                                        <span th:if="'show' == ${searchByKeywordFormView}">
+                                                <li><a href="#" onclick="showSearchForm()">
+                                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                                    </a>
+                                                </li>
+                                        </span>
                                         <span sec:authorize="isAnonymous()">
                                         <li><a href="/login">Login</a></li>
                                         </span>
-                                        <span sec:authorize="isAuthenticated()" >
-                                            <li><a href="/events"><b>Event List</b></a></li>
 
-                                            <span th:if="'show' == ${searchByKeywordFormView}">
-                                                <li><a href="#" onclick="showSearchForm()">
-                                                    <i class="fa fa-search" aria-hidden="true"></i> Search
-                                                    </a>
-                                                </li>
+                                        <span sec:authorize="isAuthenticated()">
+                                            <li><a href="/events"><b><i class="fa fa-list" aria-hidden="true"></i> Event List</b></a></li>
+                                            <li><a th:href="@{/event-form}"><b><i class="fa fa-plus" aria-hidden="true"></i> Add event</b></a></li>
                                         </span>
                                         </span>
                                     </ul>
@@ -51,7 +53,7 @@
                             <div class="header-right-btn f-right d-none d-lg-block ml-30">
                                 <form name="logoutForm" th:hidden="true" method="post" th:action="@{/logout}"
                                       th:object="${user}">
-                    <input type="submit" value="Logout"/>
+                    <input type="submit" value="<i class=" fa fa-list" aria-hidden="true"></i>"/>
                 </form>
                     <a href="javascript: logoutForm.submit();" class="btn header-btn">Log out</a>
                             </div>
