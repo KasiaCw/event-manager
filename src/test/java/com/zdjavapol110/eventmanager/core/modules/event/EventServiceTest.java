@@ -4,7 +4,6 @@ import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentDto;
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentRepository;
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,9 +25,9 @@ class EventServiceTest {
   @Autowired CommentRepository commentRepository;
 
   @AfterEach
-  void cleanup(){
-    eventRepository.deleteAll();
+  void cleanup() {
     commentRepository.deleteAll();
+    eventRepository.deleteAll();
   }
 
   @Test
@@ -43,21 +42,21 @@ class EventServiceTest {
                 .endDate(LocalDate.of(2021, 1, 2))
                 .build());
     EventDto secoundEvent =
-            eventService.createEvent(
-                    eventFixture()
-            .title("Event in February")
-            .description("description")
-            .startDate(LocalDate.of(2021, 9, 1))
-            .endDate(LocalDate.of(2021, 2, 2))
-            .build());
+        eventService.createEvent(
+            eventFixture()
+                .title("Event in February")
+                .description("description")
+                .startDate(LocalDate.of(2021, 9, 1))
+                .endDate(LocalDate.of(2021, 2, 2))
+                .build());
     EventDto marchEvent =
-            eventService.createEvent(
-                    eventFixture()
-            .title("Event in March")
-            .description("description")
-            .startDate(LocalDate.of(2021, 3, 1))
-            .endDate(LocalDate.of(2021, 3, 2))
-            .build());
+        eventService.createEvent(
+            eventFixture()
+                .title("Event in March")
+                .description("description")
+                .startDate(LocalDate.of(2021, 3, 1))
+                .endDate(LocalDate.of(2021, 3, 2))
+                .build());
 
     // when
 
@@ -89,7 +88,7 @@ class EventServiceTest {
     // given
     EventDto initialEvent = eventService.createEvent(eventFixture().build());
     EventDto eventUpdate =
-        EventDto.builder()
+        eventFixture()
             .id(initialEvent.getId())
             .title("Updated title")
             .description("Updated description")
@@ -129,72 +128,69 @@ class EventServiceTest {
   }
 
   @Test
-  void shouldDeleteEvent(){
-    //given
+  void shouldDeleteEvent() {
+    // given
     EventDto eventToDelete =
-            eventService.createEvent(
-                    eventFixture()
-                            .title("Event to delete")
-                            .description("description")
-                            .startDate(LocalDate.of(2021, 1, 1))
-                            .endDate(LocalDate.of(2021, 1, 2))
-                            .build());
+        eventService.createEvent(
+            eventFixture()
+                .title("Event to delete")
+                .description("description")
+                .startDate(LocalDate.of(2021, 1, 1))
+                .endDate(LocalDate.of(2021, 1, 2))
+                .build());
     EventDto eventToStay =
-            eventService.createEvent(
-                    eventFixture()
-                            .title("Event to stay")
-                            .description("description")
-                            .startDate(LocalDate.of(2021, 9, 1))
-                            .endDate(LocalDate.of(2021, 2, 2))
-                            .build());
-    //when
+        eventService.createEvent(
+            eventFixture()
+                .title("Event to stay")
+                .description("description")
+                .startDate(LocalDate.of(2021, 9, 1))
+                .endDate(LocalDate.of(2021, 2, 2))
+                .build());
+    // when
     eventService.deleteEvent(eventToDelete.getId());
     int pageNo = 0;
     int pageSize = 10;
     String sortBy = "startDate";
     String sortDir = "ASC";
     List<EventDto> allEvents = eventService.getAllEvents(pageNo, pageSize, sortBy, sortDir);
-    //then
+    // then
     assertThat(allEvents).containsExactly(eventToStay).doesNotContain(eventToDelete);
   }
 
   @Test
-  void shouldCreateComment(){
-    //given
+  void shouldCreateComment() {
+    // given
     EventDto eventToComment =
-            eventService.createEvent(
-                    eventFixture()
-                            .title("Event to stay")
-                            .description("description")
-                            .startDate(LocalDate.of(2021, 9, 1))
-                            .endDate(LocalDate.of(2021, 2, 2))
-                            .build());
+        eventService.createEvent(
+            eventFixture()
+                .title("Event to stay")
+                .description("description")
+                .startDate(LocalDate.of(2021, 9, 1))
+                .endDate(LocalDate.of(2021, 2, 2))
+                .build());
     CommentDto comment = commentFixture().build();
 
-    //wehen
-    CommentDto createdComment = commentService.createComment(eventToComment.getId(),comment);
+    // wehen
+    CommentDto createdComment = commentService.createComment(eventToComment.getId(), comment);
     List<CommentDto> commentsOfEvent = commentService.getCommentsOfEvent(eventToComment.getId());
     // then
     assertThat(commentsOfEvent).containsExactly(createdComment);
     assertThat(createdComment).usingRecursiveComparison().ignoringFields("id").isEqualTo(comment);
   }
 
-
-
   private EventDto.EventDtoBuilder eventFixture() {
     return EventDto.builder()
         .title("Test event")
         .description("Test event description")
+        .status(EventState.PUBLISHED)
         .startDate(LocalDate.of(2022, 5, 15))
         .endDate(LocalDate.of(2022, 5, 16));
   }
 
   private CommentDto.CommentDtoBuilder commentFixture() {
     return CommentDto.builder()
-            .name("Test event")
-            .email("Test comment email")
-            .body("Test comment body");
+        .name("Test event")
+        .email("Test comment email")
+        .body("Test comment body");
   }
-
-
 }
