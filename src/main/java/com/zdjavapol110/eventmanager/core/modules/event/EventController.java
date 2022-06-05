@@ -1,5 +1,7 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
+import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentDto;
+import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class EventController {
 
   private final EventService eventService;
+  private final CommentService commentService;
 
 
   private EventDto shortenDescription(EventDto eventDto) {
@@ -51,6 +54,8 @@ public class EventController {
   @GetMapping("/events/{id}")
   public String details(@PathVariable("id") Long id, Model model) {
     model.addAttribute("event", eventService.getEventById(id));
+    model.addAttribute("newComment", new CommentDto());
+    model.addAttribute("comments", commentService.getCommentsOfEvent(id));
     return "events/event-details.html";
   }
 

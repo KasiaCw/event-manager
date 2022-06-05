@@ -32,11 +32,9 @@ public class Eventserviceimpl implements EventService {
             ? Sort.by(sortBy).descending()
             : Sort.by(sortBy).ascending();
 
-    // create Pageable instance
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
     Page<Event> events = eventRepository.findAll(eventRepository.onlyPublished(), pageable);
 
-    // get content from page object
     List<Event> listOfEvents = events.getContent();
     return listOfEvents.stream().map(this::mapToDTO).collect(Collectors.toList());
   }
@@ -45,7 +43,7 @@ public class Eventserviceimpl implements EventService {
   public EventDto getEventById(long id) {
     Event event =
         eventRepository
-            .findById(id) // todo filter not published visible only for owners
+            .findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Event", "id", id));
     return mapToDTO(event);
   }
@@ -54,7 +52,7 @@ public class Eventserviceimpl implements EventService {
   public EventDto updateEvent(EventDto eventDto) {
     Event event =
         eventRepository
-            .findById(eventDto.getId()) // todo filter not published visible only for owners
+            .findById(eventDto.getId())
             .orElseThrow(() -> new ResourceNotFoundException("Event", "id", eventDto.getId()));
     event.setTitle(eventDto.getTitle());
     event.setStartDate(eventDto.getStartDate());
@@ -78,22 +76,18 @@ public class Eventserviceimpl implements EventService {
             ? Sort.by(sortBy).descending()
             : Sort.by(sortBy).ascending();
 
-    // create Pageable instance
+
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
     Specification<Event> conditionSpec =
         eventRepository.onlyPublished().and(eventRepository.onlyTitle(keyword));
     List<Event> eventsList = eventRepository.findAll(conditionSpec);
 
-    // get content from page object
-    // List<Event> listOfEvents = events.getContent();
     return eventsList.stream().map(this::mapToDTO).collect(Collectors.toList());
   }
 
   @Override
   public void deleteEvent(Long id) {
-    //    Event event = eventRepository.getReferenceById(id);
     eventRepository.deleteById(id);
-    //    eventRepository.delete(event);
   }
 
   private Event mapToEntity(EventDto eventDto) {

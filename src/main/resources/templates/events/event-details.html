@@ -29,7 +29,7 @@
             Event Details
 
         </h2>
-        <form action="#" th:action="@{/events}" th:object="${event.id}" method="get">
+
         <div class="table-responsive">
             <table class="table table-striped table-sm">
                 <thead>
@@ -50,6 +50,15 @@
                 </tbody>
             </table>
         </div>
+    <ul>
+        <li th:each="comment: ${comments}" th:text="${comment.body}">
+
+        </li>
+    </ul>
+    <form th:action="@{/events/{eventId}/comments(eventId=${event.id})}" th:object="${newComment}" method="post">
+        <input type="submit" value="Submit"/>
+        <textarea type="text" class="input" placeholder="Write a comment" th:field="*{body}"></textarea>
+    </form>
 </main>
     <!-- footer -->
     <div th:replace="/main-components/footer :: fragment"></div>
