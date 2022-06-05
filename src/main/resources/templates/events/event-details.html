@@ -1,34 +1,44 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Events list</title>
-    <link rel="stylesheet" type="text/css" href="/bootstrap.min.css"/>
-</head>
+<!doctype html>
+<html class="no-js" lang="EN" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<!-- head -->
+<div th:replace="/main-components/head :: fragment"></div>
+
 <body>
-<div class="container py-3">
-    <header>
-        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
-            <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                <span class="fs-4">Events Manager</span>
-            </a>
-
-            <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Home</a>
-                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Events Lists</a>
-                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Support</a>
-            </nav>
-        </div>
-
-    </header>
-
+<!-- header with nav menu -->
+<div th:replace="/main-components/header :: fragment"></div>
 
 <main>
-        <h2>
-            Event Details
+    <!--? Hero Start -->
+    <div class="slider-area2" style="margin-bottom: 20px">
+        <div class="slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap hero-cap2 text-center">
+                            <h2>Event Details</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero End -->
+    <center>
+        <div id="mine-searchFrm">
+            <div th:replace="/main-components/header-components/header-event-list :: fragment"></div>
+        </div>
+    </center>
 
-        </h2>
+    <section class="blog_area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8 mb-5 mb-lg-0">
+                    <div class="blog_left_sidebar">
+
+
+
         <form action="#" th:action="@{/events}" th:object="${event.id}" method="get">
         <div class="table-responsive">
             <table class="table table-striped table-sm">
