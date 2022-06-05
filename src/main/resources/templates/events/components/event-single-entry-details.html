@@ -1,0 +1,16 @@
+<form  action="#" th:action="@{/events}" th:object="${event.id}" method="get">
+<div th:fragment="fragment" class="single-post">
+    <div class="feature-img">
+        <img class="img-fluid" src="http://localhost:8080/assets/img/blog/single_blog_1.png" alt="">
+    </div>
+    <div class="blog_details">
+        <h2 style="color: #2d2d2d;" th:text ="${event.title}">...
+        </h2>
+        <ul class="blog-info-link mt-3 mb-4">
+            <p> Start date: <span th:text="${event.startDate}" style="padding-right: 2%;" ></span> <b>|</b>
+             <span style="padding-left: 2%">End date:</span> <span th:text="${event.endDate}"></span></p>
+        </ul>
+
+        <p th:text="${event.description}"></p>
+    </div>
+</div>

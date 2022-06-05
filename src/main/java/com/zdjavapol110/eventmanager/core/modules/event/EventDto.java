@@ -1,6 +1,7 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
+import com.zdjavapol110.eventmanager.core.modules.user.service.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,5 +38,5 @@ public class EventDto {
   @NotNull
   private EventState status;
 
-  private UserEntity user;
+  private UserDto user;
 }
