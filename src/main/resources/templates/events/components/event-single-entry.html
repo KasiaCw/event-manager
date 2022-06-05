@@ -1,28 +1,33 @@
 <article th:fragment="fragment" class="blog_item" th:each="event : ${events}" style="margin-bottom: 120px;"
          xmlns:margin-right="http://www.w3.org/1999/xhtml">
-  <div class="blog_item_img">
-   <img class="card-img rounded-0" src="assets/img/blog/single_blog_1.png" alt="">
-      <a href="#" class="blog_item_date" style="text-align: center; font-size: small">
-          <span th:text="${event.startDate}"/></span>
-          <span>-</span>
-          <span th:text="${event.endDate}">...</span>
+    <div class="blog_item_img">
+        <img class="card-img rounded-0" src="assets/img/blog/single_blog_1.png" alt="">
+        <a href="#" class="blog_item_date" style="text-align: center; font-size: small">
+            <span th:text="${event.startDate}"/></span>
+            <span>-</span>
+            <span th:text="${event.endDate}">...</span>
 
-      </a>
-  </div>
-  <div class="blog_details">
+        </a>
+    </div>
+    <div class="blog_details">
 
-    <a class="d-inline-block" href="blog_details.html">
-      <h2 class="blog-head" style="color: #2d2d2d;" th:text ="${event.title}">Event title</h2>
-    </a>
-      <p th:text="${event.description}">...</p>
-      <a th:href="@{/events/{id}/(id=${event.id})}"
-         class="btn btn-sm btn-success" style="color: #ffffff; a:hover.color: #ffffff;">Read more details</a>
-    <ul class="blog-info-link">
+        <a class="d-inline-block" href="blog_details.html">
+            <h2 class="blog-head" style="color: #2d2d2d;" th:text="${event.title}">Event title</h2>
+        </a>
+        <p>
+            <span th:text="${event.description}">...</span> <span>[...]</span>
+        </p>
+        <hr>
         <form th:action="@{/events/{id}(id=${event.id})}" th:method="delete">
-            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+            <button class="btn btn-sm btn-danger" type="submit" style="float: right" ; margin-right: 10px;>Cancel
+            </button>
         </form>
-      <li><a href="#"><i class="fa fa-user"></i> Travel, Lifestyle</a></li>
-      <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
-    </ul>
-  </div>
+        <a th:href="@{/events/{id}/(id=${event.id})}"
+           class="btn btn-sm btn-success"
+           style="color: #ffffff; a:hover.color: #ffffff; float: right; margin-right: 10px;">Read more details</a>
+        <ul class="blog-info-link">
+            <li style="padding-top: 15px;"><i class="fa fa-user"></i>Created by: USER</li>
+            <li style="padding-top: 15px;"><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
+        </ul>
+    </div>
 </article>
