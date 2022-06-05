@@ -15,14 +15,14 @@
             </a>
 
             <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Home</a>
-                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Events Lists</a>
+                <a class="me-3 py-2 text-dark text-decoration-none" href="/">Home</a>
+                <a class="me-3 py-2 text-dark text-decoration-none" href="/events">Events Lists</a>
                 <a class="me-3 py-2 text-dark text-decoration-none" href="#">Support</a>
             </nav>
         </div>
 
     </header>
-
+</div>
 <main>
 
 <h3>Welcome! Create new event</h3>
@@ -47,12 +47,23 @@
             <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</td>
         </tr>
         <tr>
+            <td>Event Status</td>
+            <td><select th:field="*{status}" class="form-control" id="dropDownList">
+                <option value="">select</option>
+                <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
+            </select></td>
+            <td th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Select status</td>
+        </tr>
+        <tr>
             <td><input type="submit" value="Submit"/> <p th:text="${message}"></p></td>
         </tr>
     </table>
     </form>
 </main>
 <!-- footer -->
-<div th:replace="/main-components/footer :: fragment"></div>
+<div th:replace="/main-components/footer :: fragment">
+
+</div>
     </body>
+
 </html>
