@@ -29,7 +29,8 @@ public class EventController {
 
   @GetMapping("/event-form")
   public String showForm(Model model) {
-    model.addAttribute("event", new EventDto());
+    model.addAttribute("event",  EventDto.builder().status(EventState.PUBLISHED).build());
+    model.addAttribute("statuses",EventState.values());
     return "events/new-event-form.html";
   }
 
@@ -42,6 +43,7 @@ public class EventController {
       eventService.createEvent(event);
       return "redirect:/events";
     }
+    model.addAttribute("statuses",EventState.values());
     model.addAttribute("event", event);
     return "events/new-event-form.html";
   }

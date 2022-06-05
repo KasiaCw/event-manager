@@ -45,7 +45,7 @@ public class Eventserviceimpl implements EventService {
   public EventDto getEventById(long id) {
     Event event =
         eventRepository
-            .findById(id) //todo filter not published visible only for owners
+            .findById(id) // todo filter not published visible only for owners
             .orElseThrow(() -> new ResourceNotFoundException("Event", "id", id));
     return mapToDTO(event);
   }
@@ -54,7 +54,7 @@ public class Eventserviceimpl implements EventService {
   public EventDto updateEvent(EventDto eventDto) {
     Event event =
         eventRepository
-            .findById(eventDto.getId())    //todo filter not published visible only for owners
+            .findById(eventDto.getId()) // todo filter not published visible only for owners
             .orElseThrow(() -> new ResourceNotFoundException("Event", "id", eventDto.getId()));
     event.setTitle(eventDto.getTitle());
     event.setStartDate(eventDto.getStartDate());
@@ -71,31 +71,30 @@ public class Eventserviceimpl implements EventService {
   }
 
   @Override
-  public List<EventDto> findByTitle(int pageNo, int pageSize, String sortBy, String sortDir, String keyword) {
+  public List<EventDto> findByTitle(
+      int pageNo, int pageSize, String sortBy, String sortDir, String keyword) {
     Sort sort =
-            Sort.Direction.DESC.name().equalsIgnoreCase(sortDir)
-                    ? Sort.by(sortBy).descending()
-                    : Sort.by(sortBy).ascending();
+        Sort.Direction.DESC.name().equalsIgnoreCase(sortDir)
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
 
     // create Pageable instance
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-    Specification<Event> conditionSpec = eventRepository
-            .onlyPublished()
-            .and(eventRepository.onlyTitle(keyword));
+    Specification<Event> conditionSpec =
+        eventRepository.onlyPublished().and(eventRepository.onlyTitle(keyword));
     List<Event> eventsList = eventRepository.findAll(conditionSpec);
 
     // get content from page object
-   // List<Event> listOfEvents = events.getContent();
+    // List<Event> listOfEvents = events.getContent();
     return eventsList.stream().map(this::mapToDTO).collect(Collectors.toList());
   }
 
   @Override
   public void deleteEvent(Long id) {
-//    Event event = eventRepository.getReferenceById(id);
+    //    Event event = eventRepository.getReferenceById(id);
     eventRepository.deleteById(id);
-//    eventRepository.delete(event);
+    //    eventRepository.delete(event);
   }
-
 
   private Event mapToEntity(EventDto eventDto) {
     Event event = new Event();
@@ -104,6 +103,7 @@ public class Eventserviceimpl implements EventService {
     event.setStartDate(eventDto.getStartDate());
     event.setEndDate(eventDto.getEndDate());
     event.setDescription(eventDto.getDescription());
+    event.setStatus(eventDto.getStatus());
     return event;
   }
 
@@ -114,6 +114,7 @@ public class Eventserviceimpl implements EventService {
     eventDto.setDescription(event.getDescription());
     eventDto.setStartDate(event.getStartDate());
     eventDto.setEndDate(event.getEndDate());
+    eventDto.setStatus(event.getStatus());
     return eventDto;
   }
 }
