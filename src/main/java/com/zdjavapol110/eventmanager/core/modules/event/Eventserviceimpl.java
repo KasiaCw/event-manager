@@ -25,7 +25,7 @@ public class Eventserviceimpl implements EventService {
   }
 
   @Override
-  public List<EventDto> getAllEvents(int pageNo, int pageSize, String sortBy, String sortDir) {
+  public Page<EventDto> getAllEvents(int pageNo, int pageSize, String sortBy, String sortDir) {
 
     Sort sort =
         Sort.Direction.DESC.name().equalsIgnoreCase(sortDir)
@@ -35,8 +35,8 @@ public class Eventserviceimpl implements EventService {
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
     Page<Event> events = eventRepository.findAll(eventRepository.onlyPublished(), pageable);
 
-    List<Event> listOfEvents = events.getContent();
-    return listOfEvents.stream().map(this::mapToDTO).collect(Collectors.toList());
+   return events.map(this::mapToDTO);
+
   }
 
   @Override
@@ -65,24 +65,23 @@ public class Eventserviceimpl implements EventService {
 
   @Override
   public List<EventDto> getAllEvents(int pageNo, int pageSize) {
-    return getAllEvents(pageNo, pageSize, "startDate", "asc");
+    return getAllEvents(pageNo, pageSize, "startDate", "asc").getContent();
   }
 
   @Override
-  public List<EventDto> findByTitle(
+  public Page<EventDto> findByTitle(
       int pageNo, int pageSize, String sortBy, String sortDir, String keyword) {
     Sort sort =
         Sort.Direction.DESC.name().equalsIgnoreCase(sortDir)
             ? Sort.by(sortBy).descending()
             : Sort.by(sortBy).ascending();
 
-
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
     Specification<Event> conditionSpec =
         eventRepository.onlyPublished().and(eventRepository.onlyTitle(keyword));
-    List<Event> eventsList = eventRepository.findAll(conditionSpec);
+    Page<Event> events = eventRepository.findAll((conditionSpec),pageable);
 
-    return eventsList.stream().map(this::mapToDTO).collect(Collectors.toList());
+    return events.map(this::mapToDTO);
   }
 
   @Override
