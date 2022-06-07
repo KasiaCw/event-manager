@@ -1,7 +1,8 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class EventController {
 
   private final EventService eventService;
@@ -55,19 +57,29 @@ public class EventController {
   }
 
   @GetMapping("/events")
-  public String findEvents(@RequestParam(value = "keyword",required = false)   String keyword, Model model){
+  public String findEvents(
+          @RequestParam(value = "keyword", required = false) String keyword,
+          @RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo,
+          @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+          Model model
+  ){
     System.out.println("Keyword:" + keyword);
+    log.info("Keyword: {}, pageNo: {}, pageSize: {}",keyword, pageNo, pageSize);
     model.addAttribute("keyword", keyword);
-    List<EventDto> eventsList;
+    Page<EventDto> eventsPage;
     if (keyword != null) {
-      eventsList= eventService.findByTitle(0, 10, "startDate", "asc", keyword);
+      eventsPage= eventService.findByTitle(pageNo, pageSize, "startDate", "asc", keyword);
     } else{
-      eventsList= eventService.getAllEvents(0, 10, "startDate", "asc");
+      eventsPage= eventService.getAllEvents(pageNo, pageSize, "startDate", "asc");
     }
+    model.addAttribute("totalPages",eventsPage.getTotalPages());
+    model.addAttribute("totalElements",eventsPage.getTotalElements());
+    model.addAttribute("pageSize",pageSize);
+    model.addAttribute("pageNo",pageNo);
     model.addAttribute("searchByKeywordFormView", "show");
     model.addAttribute(
             "events",
-            eventsList.stream()
+            eventsPage.getContent().stream()
                     .map(this::shortenDescription)
                     .collect(Collectors.toList()));
     return "events/events-list.html";

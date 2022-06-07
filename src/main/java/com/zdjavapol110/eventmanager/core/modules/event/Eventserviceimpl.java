@@ -25,27 +25,25 @@ public class Eventserviceimpl implements EventService {
   }
 
   @Override
-  public List<EventDto> getAllEvents(int pageNo, int pageSize, String sortBy, String sortDir) {
+  public Page<EventDto> getAllEvents(int pageNo, int pageSize, String sortBy, String sortDir) {
 
     Sort sort =
         Sort.Direction.DESC.name().equalsIgnoreCase(sortDir)
             ? Sort.by(sortBy).descending()
             : Sort.by(sortBy).ascending();
 
-    // create Pageable instance
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
     Page<Event> events = eventRepository.findAll(eventRepository.onlyPublished(), pageable);
 
-    // get content from page object
-    List<Event> listOfEvents = events.getContent();
-    return listOfEvents.stream().map(this::mapToDTO).collect(Collectors.toList());
+   return events.map(this::mapToDTO);
+
   }
 
   @Override
   public EventDto getEventById(long id) {
     Event event =
         eventRepository
-            .findById(id) // todo filter not published visible only for owners
+            .findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Event", "id", id));
     return mapToDTO(event);
   }
@@ -54,7 +52,7 @@ public class Eventserviceimpl implements EventService {
   public EventDto updateEvent(EventDto eventDto) {
     Event event =
         eventRepository
-            .findById(eventDto.getId()) // todo filter not published visible only for owners
+            .findById(eventDto.getId())
             .orElseThrow(() -> new ResourceNotFoundException("Event", "id", eventDto.getId()));
     event.setTitle(eventDto.getTitle());
     event.setStartDate(eventDto.getStartDate());
@@ -67,33 +65,28 @@ public class Eventserviceimpl implements EventService {
 
   @Override
   public List<EventDto> getAllEvents(int pageNo, int pageSize) {
-    return getAllEvents(pageNo, pageSize, "startDate", "asc");
+    return getAllEvents(pageNo, pageSize, "startDate", "asc").getContent();
   }
 
   @Override
-  public List<EventDto> findByTitle(
+  public Page<EventDto> findByTitle(
       int pageNo, int pageSize, String sortBy, String sortDir, String keyword) {
     Sort sort =
         Sort.Direction.DESC.name().equalsIgnoreCase(sortDir)
             ? Sort.by(sortBy).descending()
             : Sort.by(sortBy).ascending();
 
-    // create Pageable instance
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
     Specification<Event> conditionSpec =
         eventRepository.onlyPublished().and(eventRepository.onlyTitle(keyword));
-    List<Event> eventsList = eventRepository.findAll(conditionSpec);
+    Page<Event> events = eventRepository.findAll((conditionSpec),pageable);
 
-    // get content from page object
-    // List<Event> listOfEvents = events.getContent();
-    return eventsList.stream().map(this::mapToDTO).collect(Collectors.toList());
+    return events.map(this::mapToDTO);
   }
 
   @Override
   public void deleteEvent(Long id) {
-    //    Event event = eventRepository.getReferenceById(id);
     eventRepository.deleteById(id);
-    //    eventRepository.delete(event);
   }
 
   private Event mapToEntity(EventDto eventDto) {

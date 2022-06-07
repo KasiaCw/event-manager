@@ -1,12 +1,14 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface EventService {
 
   EventDto createEvent(EventDto eventDto);
 
-  List<EventDto> getAllEvents(int pageNo, int pageSize, String sortBy, String sortDir);
+  Page<EventDto> getAllEvents(int pageNo, int pageSize, String sortBy, String sortDir);
 
   EventDto getEventById(long id);
 
@@ -14,7 +16,7 @@ public interface EventService {
 
   List<EventDto> getAllEvents(int pageNo, int pageSize);
 
-  List<EventDto> findByTitle(int pageNo, int pageSize, String sortBy, String sortDir, String keyword);
+  Page<EventDto> findByTitle(int pageNo, int pageSize, String sortBy, String sortDir, String keyword);
 
   void deleteEvent(Long id);
 

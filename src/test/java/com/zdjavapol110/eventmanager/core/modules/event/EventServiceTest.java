@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
@@ -64,7 +65,7 @@ class EventServiceTest {
     int pageSize = 10;
     String sortBy = "startDate";
     String sortDir = "ASC";
-    List<EventDto> allEvents = eventService.getAllEvents(pageNo, pageSize, sortBy, sortDir);
+    Page<EventDto> allEvents = eventService.getAllEvents(pageNo, pageSize, sortBy, sortDir);
 
     // then
 
@@ -119,7 +120,7 @@ class EventServiceTest {
     int pageSize = 10;
     String sortBy = "startDate";
     String sortDir = "ASC";
-    List<EventDto> matchingEvents =
+    Page<EventDto> matchingEvents =
         eventService.findByTitle(pageNo, pageSize, sortBy, sortDir, keyword);
 
     // then
@@ -152,7 +153,7 @@ class EventServiceTest {
     int pageSize = 10;
     String sortBy = "startDate";
     String sortDir = "ASC";
-    List<EventDto> allEvents = eventService.getAllEvents(pageNo, pageSize, sortBy, sortDir);
+    Page<EventDto> allEvents = eventService.getAllEvents(pageNo, pageSize, sortBy, sortDir);
     // then
     assertThat(allEvents).containsExactly(eventToStay).doesNotContain(eventToDelete);
   }
