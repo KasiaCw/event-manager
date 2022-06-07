@@ -8,51 +8,115 @@
 <!-- header with nav menu -->
 <div th:replace="/main-components/header :: fragment"></div>
 
-            <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-                <a class="me-3 py-2 text-dark text-decoration-none" href="/">Home</a>
-                <a class="me-3 py-2 text-dark text-decoration-none" href="/events">Events Lists</a>
-                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Support</a>
-            </nav>
-        </div>
-
-    </header>
-
-
 <main>
-        <h2>
-            Event Details
-
-        </h2>
-
-        <div class="table-responsive">
-            <table class="table table-striped table-sm">
-                <thead>
-                <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">StartDate</th>
-                    <th scope="col">EndDate</th>
-                    <th scope="col">Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr >
-                    <td th:text ="${event.title}">...</td>
-                    <td th:text="${event.startDate}"/></td>
-                    <td th:text="${event.endDate}">...</td>
-                    <td th:text="${event.description}">...</td>
-                </tr>
-                </tbody>
-            </table>
+    <!--? Hero Start -->
+    <div class="slider-area2" style="margin-bottom: 20px">
+        <div class="slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap hero-cap2 text-center">
+                            <h2>Event details</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    <ul>
-        <li th:each="comment: ${comments}" th:text="${comment.body}">
+    </div>
+    <!-- Hero End
+    <center>
+        <div id="mine-searchFrm">
+            <div th:replace="/main-components/header-components/header-event-list :: fragment"></div>
+        </div>
+    </center>
+-->
+    <!--================Blog Area =================-->
+    <section class="blog_area single-post-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 posts-list">
+                    <article th:replace="/events/components/event-single-entry-details :: fragment"></article>
+                    <div class="navigation-top">
+                        <div class="d-sm-flex justify-content-between text-center">
+                            <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span>1500 users
+                                will participate</p>
+                        </div>
+                    </div>
+                    <div class="blog-author">
+                        <div class="media align-items-center">
+                            <!-- <img src="assets/img/blog/author.png" alt=""> -->
+                            <div class="media-body">
+                                <span style="margin-left: auto; margin-right: auto; text-align: center">
+                                    <h3>Event created by:</h3>
+                                <p>User from DataBase</p>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- comments area -->
+                    <h4 style="padding-top: 20px">Comments</h4>
+                    <div class="comments-area" style="padding-bottom: 0px; padding-top: 0px; margin-top: 10px">
+                        <div class="comment-list">
+                            <span th:switch="${isZeroComments}">
+                            <span th:case="no">
+                            <div th:each="comment: ${comments}" class="single-comment justify-content-between d-flex"
+                                 style="background-color: #f6f6f6; margin-bottom: 20px;">
+                                <div class="user justify-content-between d-flex" style="width:100%;">
+                                    <div class="desc" style="margin: 3%">
+                                        <p class="comment"
+                                           th:text="${comment.body}"></p>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <h5>
+                                                    <a href="#">Participant User</a>
+                                                </h5>
+                                                <p class="date">01-01-1900</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+                            </span>
+                                <span th:case="yes">
+                                    <div class="single-comment justify-content-between d-flex"
+                                         style="background-color: #f6f6f6; margin-bottom: 20px;">
+                                <div class="user justify-content-between d-flex" style="width:100%;">
+                                    <div class="desc" style="margin: 3%">
+                                        <p class="comment">There is no any comments yet.</p>
 
-        </li>
-    </ul>
-    <form th:action="@{/events/{eventId}/comments(eventId=${event.id})}" th:object="${newComment}" method="post">
-        <input type="submit" value="Submit"/>
-        <textarea type="text" class="input" placeholder="Write a comment" th:field="*{body}"></textarea>
-    </form>
+                                    </div>
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+                                </span>
+                            </span>
+
+
+
+            <div class="comment-form">
+                <h4>Leave a comment</h4>
+                <form th:replace="/events/components/event-comment-form :: fragment"></form>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="blog_right_sidebar">
+
+                <aside class="single_sidebar_widget newsletter_widget" style="background-color: #f6f6f6;">
+
+                    <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                            type="submit">Participate
+                    </button>
+
+                </aside>
+            </div>
+        </div>
+        </div>
+        </div>
+    </section>
+    <!--================ Blog Area end =================-->
 </main>
 
 </body>

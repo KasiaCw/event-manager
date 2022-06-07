@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -22,7 +21,6 @@ public class EventController {
 
   private final EventService eventService;
   private final CommentService commentService;
-
 
   private EventDto shortenDescription(EventDto eventDto) {
     String shortenDescription = eventDto.getDescription();
@@ -34,8 +32,8 @@ public class EventController {
 
   @GetMapping("/event-form")
   public String showForm(Model model) {
-    model.addAttribute("event",  EventDto.builder().status(EventState.PUBLISHED).build());
-    model.addAttribute("statuses",EventState.values());
+    model.addAttribute("event", EventDto.builder().status(EventState.PUBLISHED).build());
+    model.addAttribute("statuses", EventState.values());
     return "events/new-event-form.html";
   }
 
@@ -48,7 +46,7 @@ public class EventController {
       eventService.createEvent(event);
       return "redirect:/events";
     }
-    model.addAttribute("statuses",EventState.values());
+    model.addAttribute("statuses", EventState.values());
     model.addAttribute("event", event);
     return "events/new-event-form.html";
   }
@@ -58,41 +56,45 @@ public class EventController {
     model.addAttribute("event", eventService.getEventById(id));
     model.addAttribute("newComment", new CommentDto());
     model.addAttribute("comments", commentService.getCommentsOfEvent(id));
+    if (commentService.getCommentsOfEvent(id).size() == 0) {
+      model.addAttribute("isZeroComments", "yes");
+    } else {
+
+      model.addAttribute("isZeroComments", "no");
+    }
     return "events/event-details.html";
   }
 
   @GetMapping("/events")
   public String findEvents(
-          @RequestParam(value = "keyword", required = false) String keyword,
-          @RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo,
-          @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-          Model model
-  ){
+      @RequestParam(value = "keyword", required = false) String keyword,
+      @RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo,
+      @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+      Model model) {
     System.out.println("Keyword:" + keyword);
-    log.info("Keyword: {}, pageNo: {}, pageSize: {}",keyword, pageNo, pageSize);
+    log.info("Keyword: {}, pageNo: {}, pageSize: {}", keyword, pageNo, pageSize);
     model.addAttribute("keyword", keyword);
     Page<EventDto> eventsPage;
     if (keyword != null) {
-      eventsPage= eventService.findByTitle(pageNo, pageSize, "startDate", "asc", keyword);
-    } else{
-      eventsPage= eventService.getAllEvents(pageNo, pageSize, "startDate", "asc");
+      eventsPage = eventService.findByTitle(pageNo, pageSize, "startDate", "asc", keyword);
+    } else {
+      eventsPage = eventService.getAllEvents(pageNo, pageSize, "startDate", "asc");
     }
-    model.addAttribute("totalPages",eventsPage.getTotalPages());
-    model.addAttribute("totalElements",eventsPage.getTotalElements());
-    model.addAttribute("pageSize",pageSize);
-    model.addAttribute("pageNo",pageNo);
+    model.addAttribute("totalPages", eventsPage.getTotalPages());
+    model.addAttribute("totalElements", eventsPage.getTotalElements());
+    model.addAttribute("pageSize", pageSize);
+    model.addAttribute("pageNo", pageNo);
     model.addAttribute("searchByKeywordFormView", "show");
     model.addAttribute(
-            "events",
-            eventsPage.getContent().stream()
-                    .map(this::shortenDescription)
-                    .collect(Collectors.toList()));
+        "events",
+        eventsPage.getContent().stream()
+            .map(this::shortenDescription)
+            .collect(Collectors.toList()));
     return "events/events-list.html";
-
   }
 
   @DeleteMapping("/events/{id}")
-  public String delete (@PathVariable("id") Long id){
+  public String delete(@PathVariable("id") Long id) {
     eventService.deleteEvent(id);
     return "redirect:/events";
   }

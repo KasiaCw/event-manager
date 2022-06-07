@@ -1,9 +1,10 @@
-<form th:fragment="fragment" class="form-contact comment_form" action="#" id="commentForm">
+<form th:fragment="fragment" class="form-contact comment_form" action="#" id="commentForm"
+      th:action="@{/events/{eventId}/comments(eventId=${event.id})}" th:object="${newComment}" method="post">
     <div class="row">
         <div class="col-12">
             <div class="form-group">
               <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9"
-              placeholder="Write Comment"></textarea>
+              placeholder="Write Comment" th:field="*{body}"></textarea>
             </div>
         </div>
     </div>
