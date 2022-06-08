@@ -34,6 +34,7 @@
     <section class="blog_area single-post-area section-padding">
         <div class="container">
             <div class="row">
+
                 <div class="col-lg-8 posts-list">
                     <article th:replace="/events/components/event-single-entry-details :: fragment"></article>
                     <div class="navigation-top">
@@ -95,26 +96,27 @@
                             </span>
 
 
+                            <div class="comment-form">
+                                <h4>Leave a comment</h4>
+                                <form th:replace="/events/components/event-comment-form :: fragment"></form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="blog_right_sidebar">
 
-            <div class="comment-form">
-                <h4>Leave a comment</h4>
-                <form th:replace="/events/components/event-comment-form :: fragment"></form>
+                        <aside class="single_sidebar_widget newsletter_widget"
+                               style="background-color: #f6f6f6;">
+
+                            <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                    type="submit">Participate
+                            </button>
+
+                        </aside>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="blog_right_sidebar">
-
-                <aside class="single_sidebar_widget newsletter_widget" style="background-color: #f6f6f6;">
-
-                    <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                            type="submit">Participate
-                    </button>
-
-                </aside>
-            </div>
-        </div>
-        </div>
-        </div>
     </section>
     <!--================ Blog Area end =================-->
 </main>
