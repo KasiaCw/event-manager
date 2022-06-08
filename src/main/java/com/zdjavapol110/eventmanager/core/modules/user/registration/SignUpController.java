@@ -53,6 +53,7 @@ public class SignUpController {
       model.addAttribute("user", new UserDto());
       return "signup/signup.html";
     }
+    model.addAttribute("user", new UserDto());
     return "signup/register_success";
   }
 

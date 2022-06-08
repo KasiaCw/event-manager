@@ -26,8 +26,8 @@
            class="btn btn-sm btn-success"
            style="color: #ffffff; a:hover.color: #ffffff; float: right; margin-right: 10px;">Read more details</a>
         <ul class="blog-info-link">
-            <li style="padding-top: 15px;"><i class="fa fa-user"></i>Created by:<span th:text="${event?.createdBy?.displayName}"> USER</span></li>
-            <li style="padding-top: 15px;"><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
+            <li style="padding-top: 15px;"><i class="fa fa-user"></i>Created by:   <span th:text="${event?.createdBy?.displayName}"> USER</span></li>
+            <li style="padding-top: 15px;"><a th:href="@{/events/{id}#comments(id=${event.id})}"><i class="fa fa-comments"></i> 03 Comments</a></li> <!-- todo: comment count -->
         </ul>
     </div>
 </article>

@@ -1,15 +1,50 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="ISO-8859-1">
-    <title>Registration Success</title>
-    <link rel="stylesheet" type="text/css" href="/bootstrap.min.css" />
-</head>
+<!doctype html>
+<html class="no-js" lang="EN">
+
+<!-- head -->
+<div th:replace="/main-components/head :: fragment"></div>
+
 <body>
-<div class="container text-center">
-    <h3>You have signed up successfully!</h3>
-    <h4><a th:href="@{/login}">Click here to Login</a></h4>
-</div>
+<!-- header with nav menu -->
+<div th:replace="/main-components/header :: fragment"></div>
+
+<main>
+    <!--? Hero Start -->
+    <div class="slider-area2" style="margin-bottom: 20px">
+        <div class="slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap hero-cap2 text-center">
+                            <h2>Login</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero End -->
+    <section class="blog_area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8 mb-5 mb-lg-0">
+                    <div class="blog_left_sidebar">
+
+                        <div class="alert alert-info">You have signed up successfully! You can now login through the
+                            form below.
+                        </div>
+                        <form th:replace="/signup/login-form :: fragment">...</form>
+
+                    </div>
+                </div>
+                <div class="col-2"></div>
+            </div>
+        </div>
+    </section>
+</main>
 
 </body>
-</html>
+<!-- footer -->
+<div th:replace="/main-components/footer :: fragment"></div>
+<div class="mine-js-hidden" th:replace="/main-components/js-list :: fragment"></div>

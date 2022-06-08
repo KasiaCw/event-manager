@@ -1,53 +1,47 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SignUp</title>
-    <link rel="stylesheet" type="text/css" href="/bootstrap.min.css"/>
-</head>
+<!doctype html>
+<html class="no-js" lang="EN">
+
+<!-- head -->
+<div th:replace="/main-components/head :: fragment"></div>
+
 <body>
+<!-- header with nav menu -->
+<div th:replace="/main-components/header :: fragment"></div>
 
-<div class="container text-center">
-    <div>
-        <h1>User Login</h1>
+<main>
+    <!--? Hero Start -->
+    <div class="slider-area2" style="margin-bottom: 20px">
+        <div class="slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap hero-cap2 text-center">
+                            <h2>Login</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- Hero End -->
+    <section class="blog_area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8 mb-5 mb-lg-0">
+                    <div class="blog_left_sidebar">
 
-    <form th:action="@{/login}" method="post"
-          style="max-width: 600px; margin: 0 auto;"
-          th:object="${user}">
+                    <form th:replace="/signup/login-form :: fragment">...</form>
 
-        <div th:if="${param.error}">
-            <div class="alert alert-info">Invalid username or password.</div>
-        </div>
-
-        <div th:if="${param.logout}" class="alert alert-success">You have been logged out.</div>
-
-        <div class="p-3">
-            <div class="form-group row">
-                <label class="col-4 col-form-label">email</label>
-                <div class="col-8">
-                    <input type="email" class="form-control" th:field="*{email}" required/>
+                    </div>
                 </div>
-            </div>
-            <br>
-            <div class="form-group row">
-                <label class="col-4 col-form-label">Password: </label>
-                <div class="col-8">
-                    <input type="password" th:field="*{password}" class="form-control"
-                           required minlength="8" maxlength="30"/>
-                </div>
-            </div>
-            <br>
-
-            <div>
-                <button type="submit" class="btn btn-primary mt-2">Login</button>
-
+                <div class="col-2"></div>
             </div>
         </div>
-    </form>
-    <footer><a th:href="@{/}">back</a></footer>
-</div>
+    </section>
+</main>
 
 </body>
-</html>
+<!-- footer -->
+<div th:replace="/main-components/footer :: fragment"></div>
+<div class="mine-js-hidden" th:replace="/main-components/js-list :: fragment"></div>
