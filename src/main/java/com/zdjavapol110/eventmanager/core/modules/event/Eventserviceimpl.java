@@ -1,5 +1,7 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
+import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
+import com.zdjavapol110.eventmanager.core.modules.userdetails.UserReadDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,11 +11,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class Eventserviceimpl implements EventService {
+class Eventserviceimpl implements EventService {
 
   private final EventRepository eventRepository;
 
@@ -21,7 +22,7 @@ public class Eventserviceimpl implements EventService {
   public EventDto createEvent(EventDto eventDto) {
     Event event = mapToEntity(eventDto);
     Event newEvent = eventRepository.save(event);
-    return mapToDTO(newEvent);
+    return mapToDTO(eventRepository.findById(newEvent.getId()).orElseThrow());
   }
 
   @Override
@@ -35,8 +36,7 @@ public class Eventserviceimpl implements EventService {
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
     Page<Event> events = eventRepository.findAll(eventRepository.onlyPublished(), pageable);
 
-   return events.map(this::mapToDTO);
-
+    return events.map(this::mapToDTO);
   }
 
   @Override
@@ -79,7 +79,7 @@ public class Eventserviceimpl implements EventService {
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
     Specification<Event> conditionSpec =
         eventRepository.onlyPublished().and(eventRepository.onlyTitle(keyword));
-    Page<Event> events = eventRepository.findAll((conditionSpec),pageable);
+    Page<Event> events = eventRepository.findAll((conditionSpec), pageable);
 
     return events.map(this::mapToDTO);
   }
@@ -97,7 +97,17 @@ public class Eventserviceimpl implements EventService {
     event.setEndDate(eventDto.getEndDate());
     event.setDescription(eventDto.getDescription());
     event.setStatus(eventDto.getStatus());
+    event.setUser(mapToUserEntity(eventDto.getCreatedBy()));
     return event;
+  }
+
+  private UserEntity mapToUserEntity(UserReadDto createdBy) {
+    if (createdBy == null || createdBy.getId() == null) {
+      return null;
+    }
+    return UserEntity.builder().id(createdBy.getId())
+
+            .build();
   }
 
   private EventDto mapToDTO(Event event) {
@@ -108,6 +118,14 @@ public class Eventserviceimpl implements EventService {
     eventDto.setStartDate(event.getStartDate());
     eventDto.setEndDate(event.getEndDate());
     eventDto.setStatus(event.getStatus());
+    eventDto.setCreatedBy(mapToUserDto(event.getUser()));
     return eventDto;
+  }
+
+  private UserReadDto mapToUserDto(UserEntity user) {
+    if (user == null) {
+      return null;
+    }
+    return UserReadDto.builder().id(user.getId()).displayName(user.getEmail()).build();
   }
 }

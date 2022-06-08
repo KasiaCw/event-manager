@@ -2,6 +2,7 @@ package com.zdjavapol110.eventmanager.core.modules.event;
 
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentDto;
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentService;
+import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.stream.Collectors;
 
@@ -21,6 +23,7 @@ public class EventController {
 
   private final EventService eventService;
   private final CommentService commentService;
+  private final UserDetailsService userDetailsService;
 
   private EventDto shortenDescription(EventDto eventDto) {
     String shortenDescription = eventDto.getDescription();
@@ -39,7 +42,10 @@ public class EventController {
 
   @PostMapping("/events")
   public String submit(
-      @Valid @ModelAttribute("event") EventDto event, BindingResult result, ModelMap model) {
+      @Valid @ModelAttribute("event") EventDto event, BindingResult result, ModelMap model, HttpServletRequest request) {
+
+    event.setCreatedBy(userDetailsService.getUserDetailsFromRequest(request).orElse(null));
+
     if (result.hasErrors()) {
       model.addAttribute("message", "Please enter correct details");
     } else {

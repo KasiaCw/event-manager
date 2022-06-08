@@ -1,6 +1,7 @@
 package com.zdjavapol110.eventmanager.core.modules.user;
 
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,8 @@ import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
+    @Getter
+    private final Long id;
     private String userName;
     private String password;
     private boolean active;
@@ -22,6 +25,7 @@ public class CustomUserDetails implements UserDetails {
         this.password = userEntity.getPassword();
         this.active = userEntity.isActive();
         this.authorityList = List.of(new SimpleGrantedAuthority(userEntity.getRole().name()));
+        this.id = userEntity.getId();
     }
 
     @Override
