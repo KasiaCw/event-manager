@@ -39,6 +39,6 @@ public class EventDto {
   @NotNull
   private EventState status;
 
-  private UserDto user;
+
   private UserReadDto createdBy;
 }

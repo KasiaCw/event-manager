@@ -48,7 +48,7 @@
                             <div class="media-body">
                                 <span style="margin-left: auto; margin-right: auto; text-align: center">
                                     <h3>Event created by:</h3>
-                                <p>User from DataBase</p>
+                                <p th:text="${event?.createdBy?.displayName}">User from DataBase</p>
                                     </span>
                             </div>
                         </div>
@@ -68,9 +68,9 @@
                                         <div class="d-flex justify-content-between">
                                             <div class="d-flex align-items-center">
                                                 <h5>
-                                                    <a href="#">Participant User</a>
+                                                    <a href="#" th:text="${comment?.createdBy?.displayName}">Participant User</a>
                                                 </h5>
-                                                <p class="date">01-01-1900</p>
+                                                <p class="date" th:text="${comment.createdDate}">01-01-1900</p>
                                             </div>
                                         </div>
                                     </div>

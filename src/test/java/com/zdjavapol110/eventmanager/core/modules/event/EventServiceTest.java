@@ -190,8 +190,6 @@ class EventServiceTest {
 
   private CommentDto.CommentDtoBuilder commentFixture() {
     return CommentDto.builder()
-        .name("Test event")
-        .email("Test comment email")
         .body("Test comment body");
   }
 }

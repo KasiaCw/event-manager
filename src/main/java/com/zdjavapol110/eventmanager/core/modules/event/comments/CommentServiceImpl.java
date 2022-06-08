@@ -6,6 +6,7 @@ import com.zdjavapol110.eventmanager.core.modules.event.ResourceNotFoundExceptio
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,7 @@ public class CommentServiceImpl implements CommentService {
   @Override
   public CommentDto createComment(Long eventId, CommentDto commentDto) {
     Comment comment = mapToEntity(commentDto);
+    comment.setCreatedDate(LocalDate.now());
 
     Event event =
         eventRepository
@@ -49,6 +51,7 @@ public class CommentServiceImpl implements CommentService {
     CommentDto commentDto = new CommentDto();
     commentDto.setId(comment.getId());
     commentDto.setBody(comment.getBody());
+    commentDto.setCreatedDate(comment.getCreatedDate());
     commentDto.setCreatedBy(userDetailsMapper.mapToUserDto(comment.getCreatedBy()));
     return commentDto;
   }
@@ -57,6 +60,7 @@ public class CommentServiceImpl implements CommentService {
     Comment comment = new Comment();
     comment.setId(commentDto.getId());
     comment.setBody(commentDto.getBody());
+    comment.setCreatedDate(comment.getCreatedDate());
     comment.setCreatedBy(userDetailsMapper.mapToUserEntity(commentDto.getCreatedBy()));
     return comment;
   }
