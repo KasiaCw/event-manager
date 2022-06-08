@@ -1,69 +1,47 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>New event form</title>
-    <link rel="stylesheet" type="text/css" href="/bootstrap.min.css"/>
-</head>
+<!doctype html>
+<html class="no-js" lang="EN">
+
+<!-- head -->
+<div th:replace="/main-components/head :: fragment"></div>
+
 <body>
-<div class="container py-3">
-    <header>
-        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
-            <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                <span class="fs-4">Events Manager</span>
-            </a>
+<!-- header with nav menu -->
+<div th:replace="/main-components/header :: fragment"></div>
 
-            <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-                <a class="me-3 py-2 text-dark text-decoration-none" href="/">Home</a>
-                <a class="me-3 py-2 text-dark text-decoration-none" href="/events">Events Lists</a>
-                <a class="me-3 py-2 text-dark text-decoration-none" href="#">Support</a>
-            </nav>
-        </div>
-
-    </header>
-</div>
 <main>
+    <!--? Hero Start -->
+    <div class="slider-area2" style="margin-bottom: 20px">
+        <div class="slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap hero-cap2 text-center">
+                            <h2>Add event</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero End -->
+    <section class="blog_area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8 mb-5 mb-lg-0">
+                    <div class="blog_left_sidebar">
 
-<h3>Welcome! Create new event</h3>
-    <form action="#" th:action="@{/events}" th:object="${event}" method="post">
-    <table>
-        <tr>
-            <td>Title</td>
-            <td> <input type="text" th:field="*{title}" /></td>
-            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</td>
-        </tr>
-        <tr>
-            <td>Start Date</td>
-            <td> <input type="date" th:field="*{startDate}" /></td>
-        </tr>
-        <tr>
-            <td>End Date</td>
-            <td> <input type="date" th:field="*{endDate}" /></td>
-        </tr>
-        <tr>
-            <td>Desription</td>
-            <td> <input type="text" th:field="*{description}" /></td>
-            <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</td>
-        </tr>
-        <tr>
-            <td>Event Status</td>
-            <td><select th:field="*{status}" class="form-control" id="dropDownList">
-                <option value="">select</option>
-                <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
-            </select></td>
-            <td th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Select status</td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="Submit"/> <p th:text="${message}"></p></td>
-        </tr>
-    </table>
-    </form>
+                        <form th:replace="/events/components/add-form :: fragment">...</form>
+
+                    </div>
+                </div>
+                <div class="col-2"></div>
+            </div>
+        </div>
+    </section>
 </main>
+
+</body>
 <!-- footer -->
-<div th:replace="/main-components/footer :: fragment">
-
-</div>
-    </body>
-
-</html>
+<div th:replace="/main-components/footer :: fragment"></div>
+<div class="mine-js-hidden" th:replace="/main-components/js-list :: fragment"></div>

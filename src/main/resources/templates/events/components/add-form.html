@@ -1,0 +1,66 @@
+<form th:fragment="fragment" action="#" th:action="@{/events}" th:object="${event}" method="post">
+    <div class="p-3">
+        <div th:if="${#fields.hasErrors('title')}">
+            <div class="alert alert-info"><p th:error="*{title}">Title is too short</p></div>
+        </div>
+        <div th:if="${#fields.hasErrors('description')}" th:error="*{description}">
+            <div class="alert alert-info"><p>Description should have at least 20 characters</p>
+            </div>
+        </div>
+        <div th:if="${#fields.hasErrors('status')}" th:error="*{status}">
+            <div class="alert alert-info"><p>Select valid status.</p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Title</label>
+            <div class="col-8">
+                <input type="text" class="form-control" th:field="*{title}" required
+                       placeholder="Enter title"/>
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Start date</label>
+            <div class="col-8">
+                <input type="date" class="form-control" th:field="*{startDate}" required
+                       placeholder="Enter start date"/>
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">End date</label>
+            <div class="col-8">
+                <input type="date" class="form-control" th:field="*{endDate}" required
+                       placeholder="Enter end date"/>
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Description</label>
+            <div class="col-8">
+                <input type="text" class="form-control" th:field="*{description}" required
+                       placeholder="Enter description"/>
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Event Status</label>
+            <div class="col-8">
+                <select type="text" class="form-control" th:field="*{status}" required
+                        placeholder="Enter description" id="dropDownList">
+                    <option th:each="status : ${statuses}" th:value="${status}"
+                            th:text="${status}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin: 40px auto 50px;">
+            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+        </div>
+    </div>
+</form>
