@@ -42,7 +42,10 @@ public class EventController {
 
   @PostMapping("/events")
   public String submit(
-      @Valid @ModelAttribute("event") EventDto event, BindingResult result, ModelMap model, HttpServletRequest request) {
+      @Valid @ModelAttribute("event") EventDto event,
+      BindingResult result,
+      ModelMap model,
+      HttpServletRequest request) {
 
     event.setCreatedBy(userDetailsService.getUserDetailsFromRequest(request).orElse(null));
 

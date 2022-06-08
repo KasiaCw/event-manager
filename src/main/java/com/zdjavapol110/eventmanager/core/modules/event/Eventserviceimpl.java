@@ -1,7 +1,6 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
-import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
-import com.zdjavapol110.eventmanager.core.modules.userdetails.UserReadDto;
+import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +16,7 @@ import java.util.List;
 class Eventserviceimpl implements EventService {
 
   private final EventRepository eventRepository;
+  private final UserDetailsMapper userDetailsMapper;
 
   @Override
   public EventDto createEvent(EventDto eventDto) {
@@ -97,17 +97,8 @@ class Eventserviceimpl implements EventService {
     event.setEndDate(eventDto.getEndDate());
     event.setDescription(eventDto.getDescription());
     event.setStatus(eventDto.getStatus());
-    event.setUser(mapToUserEntity(eventDto.getCreatedBy()));
+    event.setCreatedBy(userDetailsMapper.mapToUserEntity(eventDto.getCreatedBy()));
     return event;
-  }
-
-  private UserEntity mapToUserEntity(UserReadDto createdBy) {
-    if (createdBy == null || createdBy.getId() == null) {
-      return null;
-    }
-    return UserEntity.builder().id(createdBy.getId())
-
-            .build();
   }
 
   private EventDto mapToDTO(Event event) {
@@ -118,14 +109,7 @@ class Eventserviceimpl implements EventService {
     eventDto.setStartDate(event.getStartDate());
     eventDto.setEndDate(event.getEndDate());
     eventDto.setStatus(event.getStatus());
-    eventDto.setCreatedBy(mapToUserDto(event.getUser()));
+    eventDto.setCreatedBy(userDetailsMapper.mapToUserDto(event.getCreatedBy()));
     return eventDto;
-  }
-
-  private UserReadDto mapToUserDto(UserEntity user) {
-    if (user == null) {
-      return null;
-    }
-    return UserReadDto.builder().id(user.getId()).displayName(user.getEmail()).build();
   }
 }

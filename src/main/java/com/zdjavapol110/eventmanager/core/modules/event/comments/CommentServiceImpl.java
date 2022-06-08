@@ -3,56 +3,61 @@ package com.zdjavapol110.eventmanager.core.modules.event.comments;
 import com.zdjavapol110.eventmanager.core.modules.event.Event;
 import com.zdjavapol110.eventmanager.core.modules.event.EventRepository;
 import com.zdjavapol110.eventmanager.core.modules.event.ResourceNotFoundException;
+import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
 
+  private final UserDetailsMapper userDetailsMapper;
+  private CommentRepository commentRepository;
+  private EventRepository eventRepository;
 
-    private CommentRepository commentRepository;
-    private EventRepository eventRepository;
+  public CommentServiceImpl(
+      CommentRepository commentRepository,
+      EventRepository eventRepository,
+      UserDetailsMapper userDetailsMapper) {
+    this.commentRepository = commentRepository;
+    this.eventRepository = eventRepository;
+    this.userDetailsMapper = userDetailsMapper;
+  }
 
-    public CommentServiceImpl(CommentRepository commentRepository, EventRepository eventRepository) {
-        this.commentRepository = commentRepository;
-        this.eventRepository = eventRepository;
-    }
+  @Override
+  public CommentDto createComment(Long eventId, CommentDto commentDto) {
+    Comment comment = mapToEntity(commentDto);
 
-    @Override
-    public CommentDto createComment(Long eventId, CommentDto commentDto) {
-        Comment comment = mapToEntity(commentDto);
+    Event event =
+        eventRepository
+            .findById(eventId)
+            .orElseThrow(() -> new ResourceNotFoundException("Event", "id", eventId));
+    comment.setEvent(event);
+    Comment newComment = commentRepository.save(comment);
 
-        Event event = eventRepository.findById(eventId).orElseThrow(
-                ()->new ResourceNotFoundException("Event", "id", eventId));
-        comment.setEvent(event);
-        Comment newComment = commentRepository.save(comment);
+    return mapToDto(newComment);
+  }
 
-        return mapToDto(newComment);
-    }
+  @Override
+  public List<CommentDto> getCommentsOfEvent(Long eventId) {
+    List<Comment> comments = commentRepository.findCommentsWithEventId(eventId);
+    return comments.stream().map(this::mapToDto).collect(Collectors.toList());
+  }
 
-    @Override
-    public List<CommentDto> getCommentsOfEvent(Long eventId) {
-        List<Comment> comments = commentRepository.findCommentsWithEventId(eventId);
-        return comments.stream().map(this::mapToDto).collect(Collectors.toList());
-    }
+  private CommentDto mapToDto(Comment comment) {
+    CommentDto commentDto = new CommentDto();
+    commentDto.setId(comment.getId());
+    commentDto.setBody(comment.getBody());
+    commentDto.setCreatedBy(userDetailsMapper.mapToUserDto(comment.getCreatedBy()));
+    return commentDto;
+  }
 
-    private CommentDto mapToDto(Comment comment){
-        CommentDto commentDto = new CommentDto();
-        commentDto.setId(comment.getId());
-        commentDto.setName(comment.getName());
-        commentDto.setEmail(comment.getEmail());
-        commentDto.setBody(comment.getBody());
-        return commentDto;
-    }
-
-    private Comment mapToEntity(CommentDto commentDto){
-        Comment comment = new Comment();
+  private Comment mapToEntity(CommentDto commentDto) {
+    Comment comment = new Comment();
     comment.setId(commentDto.getId());
-    comment.setName(commentDto.getName());
-    comment.setEmail(commentDto.getEmail());
     comment.setBody(commentDto.getBody());
+    comment.setCreatedBy(userDetailsMapper.mapToUserEntity(commentDto.getCreatedBy()));
     return comment;
-    }
+  }
 }

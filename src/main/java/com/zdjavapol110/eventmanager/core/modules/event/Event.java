@@ -39,5 +39,5 @@ public class Event {
   private EventState status = EventState.NOT_PUBLISHED;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  private UserEntity user;
+  private UserEntity createdBy;
 }
