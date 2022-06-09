@@ -7,7 +7,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -40,4 +42,8 @@ public class Event {
 
   @ManyToOne(fetch = FetchType.LAZY)
   private UserEntity createdBy;
+
+  @ManyToMany(cascade = CascadeType.ALL,
+  mappedBy = "events")
+  private Set<UserEntity> userEntities = new HashSet<>();
 }
