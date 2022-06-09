@@ -1,5 +1,6 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
+import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -112,4 +115,17 @@ class Eventserviceimpl implements EventService {
     eventDto.setCreatedBy(userDetailsMapper.mapToUserDto(event.getCreatedBy()));
     return eventDto;
   }
+
+  @Override
+  public void participateUserEntityToEvent(Long eventId, Set<UserEntity> userEntity) {
+    Optional<Event> eventOptional = eventRepository.findById(eventId);
+    if (eventOptional.isEmpty()) {
+      throw new UserEventIllegalStateException("Failed to register User. Invalid EventId :: " + eventId);
+    }
+    Event event = eventOptional.get();
+    userEntity.addAll(event.getUserEntities());
+    event.setUserEntities(userEntity);
+    eventRepository.save(event);
+  }
+
 }

@@ -2,6 +2,7 @@ package com.zdjavapol110.eventmanager.core.modules.event;
 
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentDto;
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentService;
+import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -107,4 +109,13 @@ public class EventController {
     eventService.deleteEvent(id);
     return "redirect:/events";
   }
+
+
+  @PostMapping("/events/{eventId}")
+  public String enrollUserToEvent(@PathVariable("eventId") Long eventId,
+                                  @RequestBody Set<UserEntity> userEntity){
+    eventService.participateUserEntityToEvent(eventId, userEntity);
+    return "redirect:/events";
+  }
+
 }

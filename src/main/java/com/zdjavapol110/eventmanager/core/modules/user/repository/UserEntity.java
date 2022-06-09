@@ -1,5 +1,6 @@
 package com.zdjavapol110.eventmanager.core.modules.user.repository;
 
+import com.zdjavapol110.eventmanager.core.modules.event.Event;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -52,5 +53,8 @@ public class UserEntity {
 
     @Column(name = "active", columnDefinition = "tinyint default 1")
     private boolean active = true;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<Event> events = new HashSet<>();
 
 }
