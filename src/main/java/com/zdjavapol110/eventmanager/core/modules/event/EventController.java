@@ -3,6 +3,7 @@ package com.zdjavapol110.eventmanager.core.modules.event;
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentDto;
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentService;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsService;
+import com.zdjavapol110.eventmanager.core.modules.userdetails.UserReadDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -103,8 +104,9 @@ public class EventController {
   }
 
   @DeleteMapping("/events/{id}")
-  public String delete(@PathVariable("id") Long id) {
-    eventService.deleteEvent(id);
+  public String delete(@PathVariable("id") Long id, HttpServletRequest request) {
+    UserReadDto deletedBy = userDetailsService.getRequiredUserDetailsFromRequest(request);
+    eventService.deleteEvent(id, deletedBy);
     return "redirect:/events";
   }
 }

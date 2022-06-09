@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Entity
 @Table(name = "event")
 @Data
@@ -31,13 +30,13 @@ public class Event {
   @Column(name = "description", nullable = false)
   private String description;
 
-  @OneToMany(mappedBy = "event")//, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "event") // , cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments = new ArrayList<>();
 
   @Column(name = "status", nullable = false)
   @Enumerated(EnumType.STRING)
   private EventState status = EventState.NOT_PUBLISHED;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   private UserEntity createdBy;
 }

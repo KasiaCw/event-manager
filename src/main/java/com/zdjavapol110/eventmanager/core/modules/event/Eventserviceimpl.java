@@ -1,6 +1,8 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
+import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsMapper;
+import com.zdjavapol110.eventmanager.core.modules.userdetails.UserReadDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,7 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -19,13 +23,15 @@ class Eventserviceimpl implements EventService {
   private final UserDetailsMapper userDetailsMapper;
 
   @Override
+  @Transactional
   public EventDto createEvent(EventDto eventDto) {
     Event event = mapToEntity(eventDto);
     Event newEvent = eventRepository.save(event);
-    return mapToDTO(eventRepository.findById(newEvent.getId()).orElseThrow());
+    return mapToDTO(newEvent);
   }
 
   @Override
+  @Transactional
   public Page<EventDto> getAllEvents(int pageNo, int pageSize, String sortBy, String sortDir) {
 
     Sort sort =
@@ -85,7 +91,15 @@ class Eventserviceimpl implements EventService {
   }
 
   @Override
-  public void deleteEvent(Long id) {
+  public void deleteEvent(Long id, UserReadDto deleteRequestedBy) {
+    eventRepository
+        .findById(id)
+        .map(Event::getCreatedBy)
+        .filter(Objects::nonNull)
+        .map(UserEntity::getId)
+        .filter(deleteRequestedBy.getId()::equals)
+        .orElseThrow(ModificationForbiddenException::new);
+
     eventRepository.deleteById(id);
   }
 

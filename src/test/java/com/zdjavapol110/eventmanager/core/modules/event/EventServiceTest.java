@@ -3,13 +3,19 @@ package com.zdjavapol110.eventmanager.core.modules.event;
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentDto;
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentRepository;
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentService;
+import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
+import com.zdjavapol110.eventmanager.core.modules.user.repository.UserRepository;
+import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsMapper;
+import com.zdjavapol110.eventmanager.core.modules.userdetails.UserReadDto;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,11 +30,24 @@ class EventServiceTest {
 
   @Autowired CommentService commentService;
   @Autowired CommentRepository commentRepository;
+  @Autowired UserRepository userRepository;
+  @Autowired UserDetailsMapper userDetailsMapper;
+  private UserReadDto userReadDto;
 
   @AfterEach
   void cleanup() {
     commentRepository.deleteAll();
     eventRepository.deleteAll();
+    userRepository.deleteAll();
+  }
+
+  @BeforeEach
+  @Transactional
+  void initTestData() {
+    UserEntity userEntity =
+        userRepository.save(
+            UserEntity.builder().username("testuser").email("testuser@gmail.com").build());
+    this.userReadDto = userDetailsMapper.mapToUserDto(userEntity);
   }
 
   @Test
@@ -148,7 +167,8 @@ class EventServiceTest {
                 .endDate(LocalDate.of(2021, 2, 2))
                 .build());
     // when
-    eventService.deleteEvent(eventToDelete.getId());
+    UserReadDto deletedBy = userReadFixture().build();
+    eventService.deleteEvent(eventToDelete.getId(), deletedBy);
     int pageNo = 0;
     int pageSize = 10;
     String sortBy = "startDate";
@@ -169,14 +189,14 @@ class EventServiceTest {
                 .startDate(LocalDate.of(2021, 9, 1))
                 .endDate(LocalDate.of(2021, 2, 2))
                 .build());
-    CommentDto comment = commentFixture().build();
+    CommentDto expected = commentFixture().createdDate(LocalDate.now()).build();
 
     // wehen
-    CommentDto createdComment = commentService.createComment(eventToComment.getId(), comment);
+    CommentDto createdComment = commentService.createComment(eventToComment.getId(), expected);
     List<CommentDto> commentsOfEvent = commentService.getCommentsOfEvent(eventToComment.getId());
     // then
     assertThat(commentsOfEvent).containsExactly(createdComment);
-    assertThat(createdComment).usingRecursiveComparison().ignoringFields("id").isEqualTo(comment);
+    assertThat(createdComment).usingRecursiveComparison().ignoringFields("id").isEqualTo(expected);
   }
 
   private EventDto.EventDtoBuilder eventFixture() {
@@ -185,11 +205,15 @@ class EventServiceTest {
         .description("Test event description")
         .status(EventState.PUBLISHED)
         .startDate(LocalDate.of(2022, 5, 15))
-        .endDate(LocalDate.of(2022, 5, 16));
+        .endDate(LocalDate.of(2022, 5, 16))
+        .createdBy(userReadFixture().build());
   }
 
   private CommentDto.CommentDtoBuilder commentFixture() {
-    return CommentDto.builder()
-        .body("Test comment body");
+    return CommentDto.builder().body("Test comment body");
+  }
+
+  private UserReadDto.UserReadDtoBuilder userReadFixture() {
+    return userReadDto.toBuilder();
   }
 }

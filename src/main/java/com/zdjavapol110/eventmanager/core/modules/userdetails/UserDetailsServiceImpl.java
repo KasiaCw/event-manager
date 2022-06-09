@@ -27,4 +27,11 @@ class UserDetailsServiceImpl implements UserDetailsService {
     }
     return Optional.empty();
   }
+
+  @Override
+  public UserReadDto getRequiredUserDetailsFromRequest(HttpServletRequest request) {
+    return getUserDetailsFromRequest(request)
+        .filter(userReadDto -> userReadDto.getId() != null)
+        .orElseThrow(UnauthorizedUserException::new);
+  }
 }
