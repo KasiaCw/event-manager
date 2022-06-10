@@ -1,6 +1,5 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
-import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsMapper;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserReadDto;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -96,15 +95,29 @@ class Eventserviceimpl implements EventService {
 
   @Override
   public void deleteEvent(Long id, UserReadDto deleteRequestedBy) {
-    eventRepository
-        .findById(id)
-        .map(Event::getCreatedBy)
-        .filter(Objects::nonNull)
-        .map(UserEntity::getId)
-        .filter(deleteRequestedBy.getId()::equals)
-        .orElseThrow(ModificationForbiddenException::new);
-
+    EventDto eventDto = getEventById(id);
+    if (!canDelete(eventDto, Optional.ofNullable(deleteRequestedBy))) {
+      throw new ModificationForbiddenException();
+    }
     eventRepository.deleteById(id);
+  }
+
+  @Override
+  public EventDto setCanDelete(EventDto eventDto, Optional<UserReadDto> currentUser) {
+    return eventDto.toBuilder().canDelete(canDelete(eventDto, currentUser)).build();
+  }
+
+  private boolean canDelete(EventDto eventDto, Optional<UserReadDto> currentUser) {
+    boolean canDelete =
+        currentUser
+            .map(UserReadDto::getId)
+            .filter(
+                userId ->
+                    userId != null
+                        && eventDto.getCreatedBy() != null
+                        && userId.equals(eventDto.getCreatedBy().getId()))
+            .isPresent();
+    return canDelete;
   }
 
   private Event mapToEntity(EventDto eventDto) {

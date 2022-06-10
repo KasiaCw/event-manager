@@ -18,7 +18,7 @@
             <span th:text="${event.description}">...</span> <span>[...]</span>
         </p>
         <hr>
-        <form th:action="@{/events/{id}(id=${event.id})}" th:method="delete">
+        <form th:action="@{/events/{id}(id=${event.id})}" th:method="delete" th:if="${event.canDelete}">
             <button class="btn btn-sm btn-danger" type="submit" style="float: right" ; margin-right: 10px;>Cancel
             </button>
         </form>

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface EventService {
 
@@ -18,6 +19,8 @@ public interface EventService {
   EventDto getEventById(long id);
 
   EventDto updateEvent(EventDto eventDto);
+
+  EventDto setCanDelete(EventDto eventDto, Optional<UserReadDto> currentUser);
 
   List<EventDto> getAllEvents(int pageNo, int pageSize);
 

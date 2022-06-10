@@ -1,8 +1,6 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
-import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserReadDto;
-import com.zdjavapol110.eventmanager.core.modules.user.service.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,9 +34,9 @@ public class EventDto {
   @Size(min = 20)
   private String description;
 
-  @NotNull
-  private EventState status;
-
+  @NotNull private EventState status;
 
   private UserReadDto createdBy;
+
+  private boolean canDelete;
 }

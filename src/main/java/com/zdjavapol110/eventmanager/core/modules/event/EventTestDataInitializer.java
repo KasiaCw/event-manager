@@ -31,7 +31,7 @@ class EventTestDataInitializer implements InitializingBean {
   public void afterPropertiesSet() {
     if (isEventsTableEmpty()) {
       log.info("Empty events DB - will initailize with test data");
-      for (int i = 0; i < 15; i++) {
+      for (int i = 0; i < 1; i++) {
         eventService.createEvent(
             EventDto.builder()
                 .title("Metallica show" + i)

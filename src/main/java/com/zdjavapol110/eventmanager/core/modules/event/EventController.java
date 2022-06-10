@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -80,7 +81,8 @@ public class EventController {
       @RequestParam(value = "keyword", required = false) String keyword,
       @RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo,
       @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-      Model model) {
+      Model model,
+      HttpServletRequest request) {
     System.out.println("Keyword:" + keyword);
     log.info("Keyword: {}, pageNo: {}, pageSize: {}", keyword, pageNo, pageSize);
     model.addAttribute("keyword", keyword);
@@ -90,6 +92,10 @@ public class EventController {
     } else {
       eventsPage = eventService.getAllEvents(pageNo, pageSize, "startDate", "asc");
     }
+
+    Optional<UserReadDto> currentUser = userDetailsService.getUserDetailsFromRequest(request);
+    eventsPage = eventsPage.map(eventDto -> eventService.setCanDelete(eventDto, currentUser));
+
     model.addAttribute("totalPages", eventsPage.getTotalPages());
     model.addAttribute("totalElements", eventsPage.getTotalElements());
     model.addAttribute("pageSize", pageSize);
