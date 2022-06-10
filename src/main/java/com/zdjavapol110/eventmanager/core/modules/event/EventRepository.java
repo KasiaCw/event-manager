@@ -1,11 +1,11 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
-import lombok.Builder;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface EventRepository
@@ -17,6 +17,11 @@ public interface EventRepository
     default Specification<Event> onlyPublished() {
         return ((root, query, criteriaBuilder) -> criteriaBuilder
                 .notEqual(root.get("status"),EventState.NOT_PUBLISHED));
+    }
+
+    default Specification<Event> endsAfter(LocalDate date) {
+        return ((root, query, criteriaBuilder) -> criteriaBuilder
+                .greaterThanOrEqualTo(root.get("endDate"),date));
     }
 
     default Specification<Event> onlyTitle(String title) {

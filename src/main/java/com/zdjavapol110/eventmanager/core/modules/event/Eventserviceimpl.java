@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,15 +34,34 @@ class Eventserviceimpl implements EventService {
   @Override
   @Transactional
   public Page<EventDto> getAllEvents(int pageNo, int pageSize, String sortBy, String sortDir) {
+    Specification<Event> conditionSpec = eventRepository.onlyPublished();
+    return getEventsBySpecification(pageNo, pageSize, sortBy, sortDir, conditionSpec);
+  }
 
+  @Override
+  public Page<EventDto> getAllEventsAfter(
+      LocalDate date, int pageNo, int pageSize, String sortBy, String sortDir) {
+    Specification<Event> conditionSpec =
+        eventRepository.onlyPublished().and(eventRepository.endsAfter(date));
+    return getEventsBySpecification(pageNo, pageSize, sortBy, sortDir, conditionSpec);
+  }
+
+  @Override
+  public Page<EventDto> findByTitle(
+      int pageNo, int pageSize, String sortBy, String sortDir, String keyword) {
+    Specification<Event> conditionSpec =
+        eventRepository.onlyPublished().and(eventRepository.onlyTitle(keyword));
+    return getEventsBySpecification(pageNo, pageSize, sortBy, sortDir, conditionSpec);
+  }
+
+  private Page<EventDto> getEventsBySpecification(
+      int pageNo, int pageSize, String sortBy, String sortDir, Specification<Event> conditionSpec) {
     Sort sort =
         Sort.Direction.DESC.name().equalsIgnoreCase(sortDir)
             ? Sort.by(sortBy).descending()
             : Sort.by(sortBy).ascending();
-
     Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-    Page<Event> events = eventRepository.findAll(eventRepository.onlyPublished(), pageable);
-
+    Page<Event> events = eventRepository.findAll(conditionSpec, pageable);
     return events.map(this::mapToDTO);
   }
 
@@ -72,22 +92,6 @@ class Eventserviceimpl implements EventService {
   @Override
   public List<EventDto> getAllEvents(int pageNo, int pageSize) {
     return getAllEvents(pageNo, pageSize, "startDate", "asc").getContent();
-  }
-
-  @Override
-  public Page<EventDto> findByTitle(
-      int pageNo, int pageSize, String sortBy, String sortDir, String keyword) {
-    Sort sort =
-        Sort.Direction.DESC.name().equalsIgnoreCase(sortDir)
-            ? Sort.by(sortBy).descending()
-            : Sort.by(sortBy).ascending();
-
-    Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-    Specification<Event> conditionSpec =
-        eventRepository.onlyPublished().and(eventRepository.onlyTitle(keyword));
-    Page<Event> events = eventRepository.findAll((conditionSpec), pageable);
-
-    return events.map(this::mapToDTO);
   }
 
   @Override

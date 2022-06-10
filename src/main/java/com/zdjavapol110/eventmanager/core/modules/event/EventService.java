@@ -3,6 +3,7 @@ package com.zdjavapol110.eventmanager.core.modules.event;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserReadDto;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface EventService {
@@ -10,6 +11,9 @@ public interface EventService {
   EventDto createEvent(EventDto eventDto);
 
   Page<EventDto> getAllEvents(int pageNo, int pageSize, String sortBy, String sortDir);
+
+  Page<EventDto> getAllEventsAfter(
+      LocalDate date, int pageNo, int pageSize, String sortBy, String sortDir);
 
   EventDto getEventById(long id);
 
