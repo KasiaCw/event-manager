@@ -1,5 +1,7 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
+import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
+import com.zdjavapol110.eventmanager.core.modules.user.service.StudentCourseIllegalStateException;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsMapper;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserReadDto;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +14,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -142,5 +146,23 @@ class Eventserviceimpl implements EventService {
     eventDto.setStatus(event.getStatus());
     eventDto.setCreatedBy(userDetailsMapper.mapToUserDto(event.getCreatedBy()));
     return eventDto;
+  }
+
+  @Override
+  public Optional<Event> getEventByEventName(String eventName) {
+    return eventRepository.findUsersByEventName(eventName);
+  }
+
+  @Override
+  public void registerUserToEvent(Long eventId, Set<UserEntity> userEntity) {
+    Optional<Event> eventOptional = eventRepository.findById(eventId);
+    if (eventOptional.isEmpty()) {
+      throw new StudentCourseIllegalStateException("Failed to register User. Invalid EventId :: " + eventId);
+    }
+    Event event = eventOptional.get();
+//    userEntity.addAll(event.getUsers());
+    userEntity.addAll((Collection<? extends UserEntity>) event.getCreatedBy());
+//    event.setUsers(userEntity);
+    eventRepository.save(event);
   }
 }

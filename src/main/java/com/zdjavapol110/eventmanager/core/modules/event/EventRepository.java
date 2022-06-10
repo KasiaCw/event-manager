@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface EventRepository
     extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
@@ -28,4 +29,8 @@ public interface EventRepository
         return ((root, query, criteriaBuilder) -> criteriaBuilder
                 .like(criteriaBuilder.lower(root.get("title")),"%" + title.toLowerCase() + "%"));
     }
+
+    @Query("SELECT e FROM Event e WHERE e.title = ?1")
+    Optional<Event> findUsersByEventName(String eventTitle);
+
 }

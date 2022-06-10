@@ -1,11 +1,14 @@
 package com.zdjavapol110.eventmanager.core.modules.user.repository;
 
+import com.zdjavapol110.eventmanager.core.modules.event.Event;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(
@@ -48,4 +51,17 @@ public class UserEntity {
 
   @Column(name = "active", columnDefinition = "tinyint default 1")
   private boolean active = true;
+
+//  @ManyToMany
+////          @JoinTable(
+////                  name ="users_event",
+////                  joinColumns = {
+////                          @JoinColumn(name = "uuid")
+////                  },
+////                  inverseJoinColumns = {
+////                          @JoinColumn(name = "id")
+////                  }
+////          )
+//  Set<Event> events = new HashSet<>();
+
 }
