@@ -2,7 +2,6 @@ package com.zdjavapol110.eventmanager.core.modules.event;
 
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentDto;
 import com.zdjavapol110.eventmanager.core.modules.event.comments.CommentService;
-import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.user.service.UserService;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsService;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserReadDto;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -65,6 +63,14 @@ public class EventController {
     model.addAttribute("statuses", EventState.values());
     model.addAttribute("event", event);
     return "events/new-event-form.html";
+  }
+
+  @PostMapping("/events/{eventId}/join")
+  public String joinEvent(
+      @PathVariable("eventId") Long eventId, ModelMap model, HttpServletRequest request) {
+    eventService.addParticipantToEvent(
+        eventId, userDetailsService.getRequiredUserDetailsFromRequest(request).getId());
+    return "redirect:/events/" + eventId;
   }
 
   @GetMapping("/events/{id}")
@@ -121,17 +127,18 @@ public class EventController {
     return "redirect:/events";
   }
 
-//  @PostMapping("/events/{eventId}")
-//  public String enrollUserToEvent(@PathVariable Long eventId, @RequestBody Set<UserEntity> userEntity) {
-//    eventService.registerUserToEvent(eventId, userEntity);
-//    return "Users has been successfully Enrolled to Event :: " + eventId;
-//  }
-//
-//  @GetMapping("/events/{eventTitle}")
-//  public String getUsersByEventName(@PathVariable String eventTitle, Model model) {
-//    model.addAttribute("eventTitle", eventTitle);
-//    Set<UserEntity> userByEventName = userService.getUserByEventName(eventTitle);
-//    return "events/event-details.html";
-//  }
+  //  @PostMapping("/events/{eventId}")
+  //  public String enrollUserToEvent(@PathVariable Long eventId, @RequestBody Set<UserEntity>
+  // userEntity) {
+  //    eventService.registerUserToEvent(eventId, userEntity);
+  //    return "Users has been successfully Enrolled to Event :: " + eventId;
+  //  }
+  //
+  //  @GetMapping("/events/{eventTitle}")
+  //  public String getUsersByEventName(@PathVariable String eventTitle, Model model) {
+  //    model.addAttribute("eventTitle", eventTitle);
+  //    Set<UserEntity> userByEventName = userService.getUserByEventName(eventTitle);
+  //    return "events/event-details.html";
+  //  }
 
 }

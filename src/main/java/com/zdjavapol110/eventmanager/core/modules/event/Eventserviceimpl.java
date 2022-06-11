@@ -1,6 +1,7 @@
 package com.zdjavapol110.eventmanager.core.modules.event;
 
 import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
+import com.zdjavapol110.eventmanager.core.modules.user.repository.UserRepository;
 import com.zdjavapol110.eventmanager.core.modules.user.service.StudentCourseIllegalStateException;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserDetailsMapper;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserReadDto;
@@ -25,6 +26,7 @@ class Eventserviceimpl implements EventService {
 
   private final EventRepository eventRepository;
   private final UserDetailsMapper userDetailsMapper;
+  private final UserRepository userRepository;
 
   @Override
   @Transactional
@@ -50,6 +52,7 @@ class Eventserviceimpl implements EventService {
   }
 
   @Override
+  @Transactional
   public Page<EventDto> findByTitle(
       int pageNo, int pageSize, String sortBy, String sortDir, String keyword) {
     Specification<Event> conditionSpec =
@@ -69,6 +72,7 @@ class Eventserviceimpl implements EventService {
   }
 
   @Override
+  @Transactional
   public EventDto getEventById(long id) {
     Event event =
         eventRepository
@@ -98,6 +102,7 @@ class Eventserviceimpl implements EventService {
   }
 
   @Override
+  @Transactional
   public void deleteEvent(Long id, UserReadDto deleteRequestedBy) {
     EventDto eventDto = getEventById(id);
     if (!canDelete(eventDto, Optional.ofNullable(deleteRequestedBy))) {
@@ -124,6 +129,15 @@ class Eventserviceimpl implements EventService {
     return canDelete;
   }
 
+  @Override
+  @Transactional
+  public void addParticipantToEvent(Long eventId, Long userId) {
+    eventRepository
+        .findById(eventId)
+        .map(event -> event.addParticipant(userRepository.getReferenceById(userId)))
+        .ifPresent(eventRepository::save);
+  }
+
   private Event mapToEntity(EventDto eventDto) {
     Event event = new Event();
     event.setId(eventDto.getId());
@@ -145,6 +159,7 @@ class Eventserviceimpl implements EventService {
     eventDto.setEndDate(event.getEndDate());
     eventDto.setStatus(event.getStatus());
     eventDto.setCreatedBy(userDetailsMapper.mapToUserDto(event.getCreatedBy()));
+    eventDto.setNumberOfParticipants((event.getParticipants().size()));
     return eventDto;
   }
 
@@ -157,12 +172,13 @@ class Eventserviceimpl implements EventService {
   public void registerUserToEvent(Long eventId, Set<UserEntity> userEntity) {
     Optional<Event> eventOptional = eventRepository.findById(eventId);
     if (eventOptional.isEmpty()) {
-      throw new StudentCourseIllegalStateException("Failed to register User. Invalid EventId :: " + eventId);
+      throw new StudentCourseIllegalStateException(
+          "Failed to register User. Invalid EventId :: " + eventId);
     }
     Event event = eventOptional.get();
-//    userEntity.addAll(event.getUsers());
+    //    userEntity.addAll(event.getUsers());
     userEntity.addAll((Collection<? extends UserEntity>) event.getCreatedBy());
-//    event.setUsers(userEntity);
+    //    event.setUsers(userEntity);
     eventRepository.save(event);
   }
 }

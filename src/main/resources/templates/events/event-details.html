@@ -39,7 +39,7 @@
                     <article th:replace="/events/components/event-single-entry-details :: fragment"></article>
                     <div class="navigation-top">
                         <div class="d-sm-flex justify-content-between text-center">
-                            <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span>1500 users
+                            <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span><span th:text="${event.numberOfParticipants}">1500</span> user(s)
                                 will participate</p>
                         </div>
                     </div>
@@ -108,10 +108,18 @@
 
                         <aside class="single_sidebar_widget newsletter_widget"
                                style="background-color: #f6f6f6;">
+                            <!--  th:if="${event.canDelete} -->
+                            <form th:action="@{/events/{id}/join(id=${event.id})}" th:method="post" >
+                                <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                        type="submit">Participate
+                                </button>
+                            </form>
 
-                            <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                                    type="submit">Participate
-                            </button>
+<!--                            <form th:action="@{/events/{id}/leave(id=${event.id})}" th:method="post" >-->
+<!--                                <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"-->
+<!--                                        type="submit">Leave-->
+<!--                                </button>-->
+<!--                            </form>-->
 
                         </aside>
                     </div>

@@ -39,4 +39,6 @@ public class EventDto {
   private UserReadDto createdBy;
 
   private boolean canDelete;
+
+  private int numberOfParticipants;
 }

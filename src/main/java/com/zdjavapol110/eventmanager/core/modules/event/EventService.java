@@ -4,6 +4,7 @@ import com.zdjavapol110.eventmanager.core.modules.user.repository.UserEntity;
 import com.zdjavapol110.eventmanager.core.modules.userdetails.UserReadDto;
 import org.springframework.data.domain.Page;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +32,10 @@ public interface EventService {
 
   void deleteEvent(Long id, UserReadDto deletedBy);
 
+  @Transactional
+  void addParticipantToEvent(Long eventId, Long userId);
+
   Optional<Event> getEventByEventName(String eventName);
 
   void registerUserToEvent(Long eventId, Set<UserEntity> userEntity);
-
 }

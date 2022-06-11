@@ -42,7 +42,15 @@ public class Event {
   @ManyToOne(fetch = FetchType.EAGER)
   private UserEntity createdBy;
 
-//  @ManyToMany(mappedBy = "events")
-//  Set<UserEntity> users = new HashSet<>();
+  @ManyToMany(cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "event_participants",
+      joinColumns = @JoinColumn(name = "eventId"),
+      inverseJoinColumns = @JoinColumn(name = "userId"))
+  private Set<UserEntity> participants = new HashSet<>();
 
+  public Event addParticipant(UserEntity newParticipant) {
+    participants.add(newParticipant);
+    return this;
+  }
 }
